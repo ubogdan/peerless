@@ -79,10 +79,10 @@ type APIService interface {
 	Upload(orderID string, attachments []Attachment) (bool, error)
 
 	// ValidateE911Address godoc
-	ValidateE911Address(address BaseAddress) (*ValidateE911AddressResponse, error)
+	ValidateE911Address(address BaseAddress) ([]BaseAddress, error)
 
 	// ViewNumberDetails godoc
-	ViewNumberDetails(numbers []string) (*ViewNumberDetailsResponse, error)
+	ViewNumberDetails(numbers []string) ([]OrderNumber , error)
 }
 
 // New creates an initializes a API service.
@@ -116,7 +116,7 @@ type service struct {
 // ActivateSOA was auto-generated from WSDL.
 func (s *service) ActivateSOA(orderID []string) (bool, error) {
 	req := request{
-		ActivateSOA: &ActivateSOA{
+		ActivateSOA: &activateSOA{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 		},
@@ -131,7 +131,7 @@ func (s *service) ActivateSOA(orderID []string) (bool, error) {
 // AddNotes was auto-generated from WSDL.
 func (s *service) AddNotes(orderID, note string) (bool, error) {
 	req := request{
-		AddNotes: &AddNotes{
+		AddNotes: &addNotes{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 			Notes:          note,
@@ -147,7 +147,7 @@ func (s *service) AddNotes(orderID, note string) (bool, error) {
 // CreateException was auto-generated from WSDL.
 func (s *service) CreateException(ExceptionNote *ExceptionNote) (bool, error) {
 	req := request{
-		CreateException: &CreateException{
+		CreateException: &createException{
 			Authentication: s.Authentication,
 			ExceptionNote:  ExceptionNote,
 		},
@@ -162,7 +162,7 @@ func (s *service) CreateException(ExceptionNote *ExceptionNote) (bool, error) {
 // DisconnectOrder was auto-generated from WSDL.
 func (s *service) DisconnectOrder(DisconnectOrderRequest *DisconnectOrderRequest) (string, error) {
 	req := request{
-		DisconnectOrder: &DisconnectOrder{
+		DisconnectOrder: &disconnectOrder{
 			Authentication:         s.Authentication,
 			DisconnectOrderRequest: DisconnectOrderRequest,
 		},
@@ -177,7 +177,7 @@ func (s *service) DisconnectOrder(DisconnectOrderRequest *DisconnectOrderRequest
 // Download was auto-generated from WSDL.
 func (s *service) Download(orderID string) ([]Attachment, error) {
 	req := request{
-		Download: &Download{
+		Download: &download{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 		},
@@ -192,7 +192,7 @@ func (s *service) Download(orderID string) ([]Attachment, error) {
 // GetHierarchicalView was auto-generated from WSDL.
 func (s *service) GetHierarchicalView() (*HiearchicalView, error) {
 	req := request{
-		GetHierarchicalView: &GetHierarchicalView{
+		GetHierarchicalView: &getHierarchicalView{
 			Authentication: s.Authentication,
 		},
 	}
@@ -206,7 +206,7 @@ func (s *service) GetHierarchicalView() (*HiearchicalView, error) {
 // GetNewNumberSearchFilters was auto-generated from WSDL.
 func (s *service) GetNewNumberSearchFilters(filters *NumberSearchParameters) (*NumberSearchParameters, error) {
 	req := request{
-		GetNewNumberSearchFilters: &GetNewNumberSearchFilters{
+		GetNewNumberSearchFilters: &getNewNumberSearchFilters{
 			Authentication: s.Authentication,
 			Filters:        filters,
 		},
@@ -221,7 +221,7 @@ func (s *service) GetNewNumberSearchFilters(filters *NumberSearchParameters) (*N
 // GetOrderStatus was auto-generated from WSDL.
 func (s *service) GetOrderStatus(orderID string) (string, error) {
 	req := request{
-		GetOrderStatus: &GetOrderStatus{
+		GetOrderStatus: &getOrderStatus{
 			OrderID: orderID,
 		},
 	}
@@ -235,7 +235,7 @@ func (s *service) GetOrderStatus(orderID string) (string, error) {
 // GetOrdersByPONSearch was auto-generated from WSDL.
 func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
 	req := request{
-		GetOrdersByPONSearch: &GetOrdersByPONSearch{
+		GetOrdersByPONSearch: &getOrdersByPONSearch{
 			Authentication: s.Authentication,
 			Pon:            pon,
 		},
@@ -250,7 +250,7 @@ func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
 // GetPortInRelatedOrders was auto-generated from WSDL.
 func (s *service) GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error) {
 	req := request{
-		GetPortInRelatedOrders: &GetPortInRelatedOrders{
+		GetPortInRelatedOrders: &getPortInRelatedOrders{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 		},
@@ -265,7 +265,7 @@ func (s *service) GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error) 
 // GetStatusByNumberSearch was auto-generated from WSDL.
 func (s *service) GetStatusByNumberSearch(telephoneNumber []string) (*NumberStatus, error) {
 	req := request{
-		GetStatusByNumberSearch: &GetStatusByNumberSearch{
+		GetStatusByNumberSearch: &getStatusByNumberSearch{
 			Authentication:  s.Authentication,
 			TelephoneNumber: telephoneNumber,
 		},
@@ -280,7 +280,7 @@ func (s *service) GetStatusByNumberSearch(telephoneNumber []string) (*NumberStat
 // GetTnInventoryReport was auto-generated from WSDL.
 func (s *service) GetTnInventoryReport(searchParams *TnInventoryForApiSearchParams) ([]TnInventory, error) {
 	req := request{
-		GetTnInventoryReport: &GetTnInventoryReport{
+		GetTnInventoryReport: &getTnInventoryReport{
 			Authentication: s.Authentication,
 			SearchParams:   searchParams,
 		},
@@ -295,7 +295,7 @@ func (s *service) GetTnInventoryReport(searchParams *TnInventoryForApiSearchPara
 // PlaceOrder was auto-generated from WSDL.
 func (s *service) PlaceOrder(order *Order) (string, error) {
 	req := request{
-		PlaceOrder: &PlaceOrder{
+		PlaceOrder: &placeOrder{
 			Authentication: s.Authentication,
 			Order:          order,
 		},
@@ -310,7 +310,7 @@ func (s *service) PlaceOrder(order *Order) (string, error) {
 // PlaceTFDisconnectOrder was auto-generated from WSDL.
 func (s *service) PlaceTFDisconnectOrder(disconnectOrderRequest *DisconnectOrderRequest) (string, error) {
 	req := request{
-		PlaceTFDisconnectOrder: &PlaceTFDisconnectOrder{
+		PlaceTFDisconnectOrder: &placeTFDisconnectOrder{
 			Authentication:         s.Authentication,
 			DisconnectOrderRequest: disconnectOrderRequest,
 		},
@@ -325,7 +325,7 @@ func (s *service) PlaceTFDisconnectOrder(disconnectOrderRequest *DisconnectOrder
 // PlaceTFOrder was auto-generated from WSDL.
 func (s *service) PlaceTFOrder(order *TollFreeOrder) (string, error) {
 	req := request{
-		PlaceTFOrder: &PlaceTFOrder{
+		PlaceTFOrder: &placeTFOrder{
 			Authentication: s.Authentication,
 			TFNOrder:       order,
 		},
@@ -340,7 +340,7 @@ func (s *service) PlaceTFOrder(order *TollFreeOrder) (string, error) {
 // PortabilityCheck was auto-generated from WSDL.
 func (s *service) PortabilityCheck(portabilityCheckRequest *PortabilityCheckRequest) ([]string, error) {
 	req := request{
-		PortabilityCheck: &PortabilityCheck{
+		PortabilityCheck: &portabilityCheck{
 			Authentication:          s.Authentication,
 			PortabilityCheckRequest: portabilityCheckRequest,
 		},
@@ -355,7 +355,7 @@ func (s *service) PortabilityCheck(portabilityCheckRequest *PortabilityCheckRequ
 // SearchNumbers was auto-generated from WSDL.
 func (s *service) SearchNumbers(filters *NumberSearchParameters) (*NumberSearchParameters, error) {
 	req := request{
-		SearchNumbers: &SearchNumbers{
+		SearchNumbers: &searchNumbers{
 			Authentication: s.Authentication,
 			Filters:        filters,
 		},
@@ -370,7 +370,7 @@ func (s *service) SearchNumbers(filters *NumberSearchParameters) (*NumberSearchP
 // SearchOrderDetailsByOrderId was auto-generated from WSDL.
 func (s *service) SearchOrderDetailsByOrderId(orderID int64, orderType string) (*OrderSearch, error) {
 	req := request{
-		SearchOrderDetailsByOrderId: &SearchOrderDetailsByOrderId{
+		SearchOrderDetailsByOrderId: &searchOrderDetailsByOrderId{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 			OrderType:      orderType,
@@ -386,7 +386,7 @@ func (s *service) SearchOrderDetailsByOrderId(orderID int64, orderType string) (
 // SupplementOrder was auto-generated from WSDL.
 func (s *service) SupplementOrder(supplementInfo *SupplementInfo, order *Order) (string, error) {
 	req := request{
-		SupplementOrder: &SupplementOrder{
+		SupplementOrder: &supplementOrder{
 			Authentication: s.Authentication,
 			SupplementInfo: supplementInfo,
 			Order:          order,
@@ -402,7 +402,7 @@ func (s *service) SupplementOrder(supplementInfo *SupplementInfo, order *Order) 
 // Upload was auto-generated from WSDL.
 func (s *service) Upload(orderID string, attachments []Attachment) (bool, error) {
 	req := request{
-		Upload: &Upload{
+		Upload: &upload{
 			Authentication: s.Authentication,
 			OrderID:        orderID,
 			Attachments:    attachments,
@@ -416,9 +416,9 @@ func (s *service) Upload(orderID string, attachments []Attachment) (bool, error)
 }
 
 // ValidateE911Address was auto-generated from WSDL.
-func (s *service) ValidateE911Address(address BaseAddress) (*ValidateE911AddressResponse, error) {
+func (s *service) ValidateE911Address(address BaseAddress) ([]BaseAddress, error) {
 	req := request{
-		ValidateE911Address: &ValidateE911Address{
+		ValidateE911Address: &validateE911Address{
 			Authentication: s.Authentication,
 			Address:        address,
 		},
@@ -427,13 +427,13 @@ func (s *service) ValidateE911Address(address BaseAddress) (*ValidateE911Address
 	if err != nil {
 		return nil, err
 	}
-	return res.ValidateE911Address, nil
+	return res.ValidateE911Address.Return, nil
 }
 
 // ViewNumberDetails was auto-generated from WSDL.
-func (s *service) ViewNumberDetails(numbers []string) (*ViewNumberDetailsResponse, error) {
+func (s *service) ViewNumberDetails(numbers []string) ([]OrderNumber , error) {
 	req := request{
-		ViewNumberDetails: &ViewNumberDetails{
+		ViewNumberDetails: &viewNumberDetails{
 			Authentication:  s.Authentication,
 			TelephoneNumber: numbers,
 		},
@@ -442,5 +442,5 @@ func (s *service) ViewNumberDetails(numbers []string) (*ViewNumberDetailsRespons
 	if err != nil {
 		return nil, err
 	}
-	return res.ViewNumberDetails, nil
+	return res.ViewNumberDetails.Return, nil
 }
