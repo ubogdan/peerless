@@ -443,7 +443,7 @@ type PlaceTFOrderResponse struct {
 
 // PonOrders was auto-generated from WSDL.
 type PonOrders struct {
-	Result []*ResultPONOrderDetails `xml:"result>ponOrders,omitempty" json:"result>ponOrders,omitempty" yaml:"result>ponOrders,omitempty"`
+	Result []ResultPONOrderDetails `xml:"result>ponOrders,omitempty" json:"result>ponOrders,omitempty" yaml:"result>ponOrders,omitempty"`
 }
 
 // PortPSNumber was auto-generated from WSDL.

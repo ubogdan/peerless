@@ -24,7 +24,7 @@ func (e *HTTPError) Error() string {
 	return fmt.Sprintf("%q: %q", e.Status, e.Msg)
 }
 
-func (c *service) call(soapAction string, operation Request) (*Response, error) {
+func (c *service) call(soapAction string, operation request) (*response, error) {
 
 	// Envelope is a SOAP envelope.
 	req := struct {
@@ -35,7 +35,7 @@ func (c *service) call(soapAction string, operation Request) (*Response, error) 
 		URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
 		XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
 		Header       interface{} `xml:"SOAP-ENV:Header"`
-		Body         Request `xml:"SOAP-ENV:Body"`
+		Body         request `xml:"SOAP-ENV:Body"`
 	}{
 		EnvelopeAttr: c.Envelope,
 		URNAttr:      c.URNamespace,
@@ -103,8 +103,8 @@ func (c *service) call(soapAction string, operation Request) (*Response, error) 
 
 	marshalStructure := struct {
 		XMLName xml.Name `xml:"Envelope"`
-		Body    *Response
-	}{Body: &Response{}}
+		Body    *response
+	}{Body: &response{}}
 
 	decoder := xml.NewDecoder(resp.Body)
 	//decoder.CharsetReader = charset.NewReaderLabel

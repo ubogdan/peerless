@@ -1,6 +1,6 @@
 package peerless
 
-type Request struct {
+type request struct {
 	ActivateSOA                 *ActivateSOA                 `xml:"ns:activateSOA,omitempty" json:"activateSOA,omitempty" yaml:"activateSOA,omitempty"`
 	AddNotes                    *AddNotes                    `xml:"ns:addNotes,omitempty" json:"addNotes,omitempty" yaml:"addNotes,omitempty"`
 	CreateException             *CreateException             `xml:"ns:createException,omitempty" json:"createException,omitempty" yaml:"createException,omitempty"`
@@ -25,7 +25,7 @@ type Request struct {
 	ViewNumberDetails           *ViewNumberDetails           `xml:"ns:viewNumberDetails,omitempty" json:"viewNumberDetails,omitempty" yaml:"viewNumberDetails,omitempty"`
 }
 
-type Response struct {
+type response struct {
 	ActivateSOA                 *ActivateSOAResponse                 `xml:"activateSOAResponse,omitempty" json:"activateSOAResponse,omitempty" yaml:"activateSOAResponse,omitempty"`
 	AddNotes                    *AddNotesResponse                    `xml:"addNotesResponse,omitempty" json:"addNotesResponse,omitempty" yaml:"addNotesResponse,omitempty"`
 	CreateException             *CreateExceptionResponse             `xml:"createExceptionResponse,omitempty" json:"createExceptionResponse,omitempty" yaml:"createExceptionResponse,omitempty"`
