@@ -43,7 +43,7 @@ type APIService interface {
 	GetOrderStatus(orderID string) (string, error)
 
 	// GetOrdersByPONSearch godoc
-	GetOrdersByPONSearch(pon string) (*PonOrders, error)
+	GetOrdersByPONSearch(pon string) ([]ResultPONOrderDetails, error)
 
 	// GetPortInRelatedOrders godoc
 	GetPortInRelatedOrders(orderID int64) ([]ResultOrderDetails, error)
@@ -82,7 +82,7 @@ type APIService interface {
 	ValidateE911Address(address BaseAddress) ([]BaseAddress, error)
 
 	// ViewNumberDetails godoc
-	ViewNumberDetails(numbers []string) ([]OrderNumber , error)
+	ViewNumberDetails(numbers []string) ([]OrderNumber, error)
 }
 
 // New creates an initializes a API service.
@@ -233,7 +233,7 @@ func (s *service) GetOrderStatus(orderID string) (string, error) {
 }
 
 // GetOrdersByPONSearch was auto-generated from WSDL.
-func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
+func (s *service) GetOrdersByPONSearch(pon string) ([]ResultPONOrderDetails, error) {
 	req := request{
 		GetOrdersByPONSearch: &getOrdersByPONSearch{
 			Authentication: s.Authentication,
@@ -244,7 +244,7 @@ func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
 	if err != nil {
 		return nil, err
 	}
-	return res.GetOrdersByPONSearch.Return, nil
+	return res.GetOrdersByPONSearch.Return.Result, nil
 }
 
 // GetPortInRelatedOrders was auto-generated from WSDL.
@@ -431,7 +431,7 @@ func (s *service) ValidateE911Address(address BaseAddress) ([]BaseAddress, error
 }
 
 // ViewNumberDetails was auto-generated from WSDL.
-func (s *service) ViewNumberDetails(numbers []string) ([]OrderNumber , error) {
+func (s *service) ViewNumberDetails(numbers []string) ([]OrderNumber, error) {
 	req := request{
 		ViewNumberDetails: &viewNumberDetails{
 			Authentication:  s.Authentication,

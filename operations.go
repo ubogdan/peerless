@@ -128,7 +128,9 @@ type getOrdersByPONSearch struct {
 }
 
 type getOrdersByPONSearchResponse struct {
-	Return *PonOrders `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return struct {
+		Result []ResultPONOrderDetails `xml:"result>ponOrders,omitempty" json:"result>ponOrders,omitempty" yaml:"result>ponOrders,omitempty"`
+	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 type getPortInRelatedOrders struct {
@@ -137,7 +139,7 @@ type getPortInRelatedOrders struct {
 }
 
 type getPortInRelatedOrdersResponse struct {
-	Return struct{
+	Return struct {
 		Result []ResultOrderDetails `xml:"result>relatedOrders,omitempty" json:"result>relatedOrders,omitempty" yaml:"result>relatedOrders,omitempty"`
 	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
@@ -148,7 +150,7 @@ type getStatusByNumberSearch struct {
 }
 
 type getStatusByNumberSearchResponse struct {
-	Return struct{
+	Return struct {
 		Result []string `xml:"result>entry,omitempty" json:"result>entry,omitempty" yaml:"result>entry,omitempty"`
 	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
@@ -195,7 +197,9 @@ type portabilityCheck struct {
 }
 
 type portabilityCheckResponse struct {
-	Return PortPSResponse `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return struct {
+		PortPsNumbers []string `xml:"portPsNumbers,omitempty" json:"portPsNumbers,omitempty" yaml:"portPsNumbers,omitempty"`
+	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 type searchNumbers struct {

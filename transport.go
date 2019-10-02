@@ -10,9 +10,6 @@ import (
 	"net/http"
 )
 
-
-const XSINamespace = "http://www.w3.org/2001/XMLSchema-instance"
-
 // HTTPError is detailed soap http error
 type HTTPError struct {
 	StatusCode int
@@ -35,12 +32,12 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 		URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
 		XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
 		Header       interface{} `xml:"SOAP-ENV:Header"`
-		Body         request `xml:"SOAP-ENV:Body"`
+		Body         request     `xml:"SOAP-ENV:Body"`
 	}{
 		EnvelopeAttr: c.Envelope,
 		URNAttr:      c.URNamespace,
 		NSAttr:       c.Namespace,
-		XSIAttr:      XSINamespace,
+		XSIAttr:      "http://www.w3.org/2001/XMLSchema-instance",
 		Header:       c.Header,
 		Body:         operation,
 	}
@@ -54,7 +51,7 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 	var b bytes.Buffer
 	err := xml.NewEncoder(&b).Encode(req)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	log.Printf("Req: %s", b.Bytes())
@@ -65,7 +62,7 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 	}
 	r, err := http.NewRequest("POST", c.URL, &b)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	// Set Headers
 	if c.UserAgent != "" {
@@ -87,7 +84,7 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 
 	resp, err := cli.Do(r)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -110,4 +107,3 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 	//decoder.CharsetReader = charset.NewReaderLabel
 	return marshalStructure.Body, decoder.Decode(&marshalStructure)
 }
-

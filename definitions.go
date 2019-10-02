@@ -63,10 +63,6 @@ type Exception struct {
 	Message string `xml:"message,omitempty" json:"message,omitempty" yaml:"message,omitempty"`
 }
 
-
-
-
-
 // Apie911Address was auto-generated from WSDL.
 type Apie911Address struct {
 	Number       string `xml:"number,omitempty" json:"number,omitempty" yaml:"number,omitempty"`
@@ -85,8 +81,6 @@ type Attachment struct {
 	FileContent []byte `xml:"fileContent,omitempty" json:"fileContent,omitempty" yaml:"fileContent,omitempty"`
 	FileName    string `xml:"fileName,omitempty" json:"fileName,omitempty" yaml:"fileName,omitempty"`
 }
-
-
 
 // BaseAddress was auto-generated from WSDL.
 type BaseAddress struct {
@@ -129,18 +123,18 @@ type LataVo struct {
 
 // Note was auto-generated from WSDL.
 type Note struct {
-	When     string `xml:"when,omitempty" json:"when,omitempty" yaml:"when,omitempty"`
-	Notes    string `xml:"notes,omitempty" json:"notes,omitempty" yaml:"notes,omitempty"`
-	Type     string `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	When     string  `xml:"when,omitempty" json:"when,omitempty" yaml:"when,omitempty"`
+	Notes    string  `xml:"notes,omitempty" json:"notes,omitempty" yaml:"notes,omitempty"`
+	Type     string  `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
 	Action   *Action `xml:"action,omitempty" json:"action,omitempty" yaml:"action,omitempty"`
-	UserName string `xml:"userName,omitempty" json:"userName,omitempty" yaml:"userName,omitempty"`
-	UserID   int    `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
+	UserName string  `xml:"userName,omitempty" json:"userName,omitempty" yaml:"userName,omitempty"`
+	UserID   int     `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
 }
 
 // NpaVo was auto-generated from WSDL.
 type NpaVo struct {
 	Name  string `xml:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty"`
-	NxxVo *NxxVo  `xml:"nxxVo,omitempty" json:"nxxVo,omitempty" yaml:"nxxVo,omitempty"`
+	NxxVo *NxxVo `xml:"nxxVo,omitempty" json:"nxxVo,omitempty" yaml:"nxxVo,omitempty"`
 }
 
 // NumberSearchParameters was auto-generated from WSDL.
@@ -171,82 +165,82 @@ type Order struct {
 	Pon          string        `xml:"pon,omitempty" json:"pon,omitempty" yaml:"pon,omitempty"`
 	OrderType    string        `xml:"orderType,omitempty" json:"orderType,omitempty" yaml:"orderType,omitempty"`
 	OrderNumbers []OrderNumber `xml:"orderNumbers>number,omitempty" json:"orderNumbers>number,omitempty" yaml:"orderNumbers>number,omitempty"`
-	OrderDetails *OrderDetails  `xml:"orderDetails,omitempty" json:"orderDetails,omitempty" yaml:"orderDetails,omitempty"`
+	OrderDetails *OrderDetails `xml:"orderDetails,omitempty" json:"orderDetails,omitempty" yaml:"orderDetails,omitempty"`
 }
 
 // OrderDetails was auto-generated from WSDL.
 type OrderDetails struct {
-	AccountNumber         string   `xml:"accountNumber,omitempty" json:"accountNumber,omitempty" yaml:"accountNumber,omitempty"`
-	Act                   string   `xml:"act,omitempty" json:"act,omitempty" yaml:"act,omitempty"`
-	AssignedTo            string   `xml:"assignedTo,omitempty" json:"assignedTo,omitempty" yaml:"assignedTo,omitempty"`
-	Atn                   string   `xml:"atn,omitempty" json:"atn,omitempty" yaml:"atn,omitempty"`
-	AuthDate              string   `xml:"authDate,omitempty" json:"authDate,omitempty" yaml:"authDate,omitempty"`
-	Authnm                string   `xml:"authnm,omitempty" json:"authnm,omitempty" yaml:"authnm,omitempty"`
-	Bldg                  string   `xml:"bldg,omitempty" json:"bldg,omitempty" yaml:"bldg,omitempty"`
-	CarrierName           string   `xml:"carrierName,omitempty" json:"carrierName,omitempty" yaml:"carrierName,omitempty"`
-	Cc                    string   `xml:"cc,omitempty" json:"cc,omitempty" yaml:"cc,omitempty"`
-	Ccna                  string   `xml:"ccna,omitempty" json:"ccna,omitempty" yaml:"ccna,omitempty"`
-	Chc                   string   `xml:"chc,omitempty" json:"chc,omitempty" yaml:"chc,omitempty"`
-	City                  string   `xml:"city,omitempty" json:"city,omitempty" yaml:"city,omitempty"`
-	Confirmed             bool     `xml:"confirmed,omitempty" json:"confirmed,omitempty" yaml:"confirmed,omitempty"`
+	AccountNumber         string    `xml:"accountNumber,omitempty" json:"accountNumber,omitempty" yaml:"accountNumber,omitempty"`
+	Act                   string    `xml:"act,omitempty" json:"act,omitempty" yaml:"act,omitempty"`
+	AssignedTo            string    `xml:"assignedTo,omitempty" json:"assignedTo,omitempty" yaml:"assignedTo,omitempty"`
+	Atn                   string    `xml:"atn,omitempty" json:"atn,omitempty" yaml:"atn,omitempty"`
+	AuthDate              string    `xml:"authDate,omitempty" json:"authDate,omitempty" yaml:"authDate,omitempty"`
+	Authnm                string    `xml:"authnm,omitempty" json:"authnm,omitempty" yaml:"authnm,omitempty"`
+	Bldg                  string    `xml:"bldg,omitempty" json:"bldg,omitempty" yaml:"bldg,omitempty"`
+	CarrierName           string    `xml:"carrierName,omitempty" json:"carrierName,omitempty" yaml:"carrierName,omitempty"`
+	Cc                    string    `xml:"cc,omitempty" json:"cc,omitempty" yaml:"cc,omitempty"`
+	Ccna                  string    `xml:"ccna,omitempty" json:"ccna,omitempty" yaml:"ccna,omitempty"`
+	Chc                   string    `xml:"chc,omitempty" json:"chc,omitempty" yaml:"chc,omitempty"`
+	City                  string    `xml:"city,omitempty" json:"city,omitempty" yaml:"city,omitempty"`
+	Confirmed             bool      `xml:"confirmed,omitempty" json:"confirmed,omitempty" yaml:"confirmed,omitempty"`
 	CreatedDate           *DateTime `xml:"createdDate,omitempty" json:"createdDate,omitempty" yaml:"createdDate,omitempty"`
-	CsrAccountNumber      string   `xml:"csrAccountNumber,omitempty" json:"csrAccountNumber,omitempty" yaml:"csrAccountNumber,omitempty"`
-	CsrRequested          bool     `xml:"csrRequested,omitempty" json:"csrRequested,omitempty" yaml:"csrRequested,omitempty"`
-	DesiredDueDate        string   `xml:"desiredDueDate,omitempty" json:"desiredDueDate,omitempty" yaml:"desiredDueDate,omitempty"`
-	DueDate               string   `xml:"dueDate,omitempty" json:"dueDate,omitempty" yaml:"dueDate,omitempty"`
-	EarliestPossible      bool     `xml:"earliestPossible,omitempty" json:"earliestPossible,omitempty" yaml:"earliestPossible,omitempty"`
-	Email                 string   `xml:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty"`
-	EndCustomerName       string   `xml:"endCustomerName,omitempty" json:"endCustomerName,omitempty" yaml:"endCustomerName,omitempty"`
-	EndUserVerification   bool     `xml:"endUserVerification,omitempty" json:"endUserVerification,omitempty" yaml:"endUserVerification,omitempty"`
-	FaxNumber             string   `xml:"faxNumber,omitempty" json:"faxNumber,omitempty" yaml:"faxNumber,omitempty"`
-	Floor                 string   `xml:"floor,omitempty" json:"floor,omitempty" yaml:"floor,omitempty"`
+	CsrAccountNumber      string    `xml:"csrAccountNumber,omitempty" json:"csrAccountNumber,omitempty" yaml:"csrAccountNumber,omitempty"`
+	CsrRequested          bool      `xml:"csrRequested,omitempty" json:"csrRequested,omitempty" yaml:"csrRequested,omitempty"`
+	DesiredDueDate        string    `xml:"desiredDueDate,omitempty" json:"desiredDueDate,omitempty" yaml:"desiredDueDate,omitempty"`
+	DueDate               string    `xml:"dueDate,omitempty" json:"dueDate,omitempty" yaml:"dueDate,omitempty"`
+	EarliestPossible      bool      `xml:"earliestPossible,omitempty" json:"earliestPossible,omitempty" yaml:"earliestPossible,omitempty"`
+	Email                 string    `xml:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty"`
+	EndCustomerName       string    `xml:"endCustomerName,omitempty" json:"endCustomerName,omitempty" yaml:"endCustomerName,omitempty"`
+	EndUserVerification   bool      `xml:"endUserVerification,omitempty" json:"endUserVerification,omitempty" yaml:"endUserVerification,omitempty"`
+	FaxNumber             string    `xml:"faxNumber,omitempty" json:"faxNumber,omitempty" yaml:"faxNumber,omitempty"`
+	Floor                 string    `xml:"floor,omitempty" json:"floor,omitempty" yaml:"floor,omitempty"`
 	FocDate               *DateTime `xml:"focDate,omitempty" json:"focDate,omitempty" yaml:"focDate,omitempty"`
-	FocDateSync           bool     `xml:"focDateSync,omitempty" json:"focDateSync,omitempty" yaml:"focDateSync,omitempty"`
-	GeneralNote           string   `xml:"generalNote,omitempty" json:"generalNote,omitempty" yaml:"generalNote,omitempty"`
-	Init                  string   `xml:"init,omitempty" json:"init,omitempty" yaml:"init,omitempty"`
-	InternalNote          string   `xml:"internalNote,omitempty" json:"internalNote,omitempty" yaml:"internalNote,omitempty"`
-	Mi                    string   `xml:"mi,omitempty" json:"mi,omitempty" yaml:"mi,omitempty"`
+	FocDateSync           bool      `xml:"focDateSync,omitempty" json:"focDateSync,omitempty" yaml:"focDateSync,omitempty"`
+	GeneralNote           string    `xml:"generalNote,omitempty" json:"generalNote,omitempty" yaml:"generalNote,omitempty"`
+	Init                  string    `xml:"init,omitempty" json:"init,omitempty" yaml:"init,omitempty"`
+	InternalNote          string    `xml:"internalNote,omitempty" json:"internalNote,omitempty" yaml:"internalNote,omitempty"`
+	Mi                    string    `xml:"mi,omitempty" json:"mi,omitempty" yaml:"mi,omitempty"`
 	ModifiedDate          *DateTime `xml:"modifiedDate,omitempty" json:"modifiedDate,omitempty" yaml:"modifiedDate,omitempty"`
-	MouThresholdExceeded  bool     `xml:"mouThresholdExceeded,omitempty" json:"mouThresholdExceeded,omitempty" yaml:"mouThresholdExceeded,omitempty"`
-	NewAtn                string   `xml:"newAtn,omitempty" json:"newAtn,omitempty" yaml:"newAtn,omitempty"`
-	Nnsp                  string   `xml:"nnsp,omitempty" json:"nnsp,omitempty" yaml:"nnsp,omitempty"`
-	NpacActivated         bool     `xml:"npacActivated,omitempty" json:"npacActivated,omitempty" yaml:"npacActivated,omitempty"`
+	MouThresholdExceeded  bool      `xml:"mouThresholdExceeded,omitempty" json:"mouThresholdExceeded,omitempty" yaml:"mouThresholdExceeded,omitempty"`
+	NewAtn                string    `xml:"newAtn,omitempty" json:"newAtn,omitempty" yaml:"newAtn,omitempty"`
+	Nnsp                  string    `xml:"nnsp,omitempty" json:"nnsp,omitempty" yaml:"nnsp,omitempty"`
+	NpacActivated         bool      `xml:"npacActivated,omitempty" json:"npacActivated,omitempty" yaml:"npacActivated,omitempty"`
 	NpacActivatedDate     *DateTime `xml:"npacActivatedDate,omitempty" json:"npacActivatedDate,omitempty" yaml:"npacActivatedDate,omitempty"`
-	Npdi                  string   `xml:"npdi,omitempty" json:"npdi,omitempty" yaml:"npdi,omitempty"`
-	NumberOfTns           int64    `xml:"numberOfTns,omitempty" json:"numberOfTns,omitempty" yaml:"numberOfTns,omitempty"`
-	PortOutAssignedEntity string   `xml:"portOutAssignedEntity,omitempty" json:"portOutAssignedEntity,omitempty" yaml:"portOutAssignedEntity,omitempty"`
-	PurchaseOrderNumber   string   `xml:"purchaseOrderNumber,omitempty" json:"purchaseOrderNumber,omitempty" yaml:"purchaseOrderNumber,omitempty"`
-	Remarks               string   `xml:"remarks,omitempty" json:"remarks,omitempty" yaml:"remarks,omitempty"`
-	Room                  string   `xml:"room,omitempty" json:"room,omitempty" yaml:"room,omitempty"`
-	SadloAdditionalInfo   string   `xml:"sadloAdditionalInfo,omitempty" json:"sadloAdditionalInfo,omitempty" yaml:"sadloAdditionalInfo,omitempty"`
-	SanoHouseNumber       string   `xml:"sanoHouseNumber,omitempty" json:"sanoHouseNumber,omitempty" yaml:"sanoHouseNumber,omitempty"`
-	SaprHousePrefix       string   `xml:"saprHousePrefix,omitempty" json:"saprHousePrefix,omitempty" yaml:"saprHousePrefix,omitempty"`
-	SasdStrDir            string   `xml:"sasdStrDir,omitempty" json:"sasdStrDir,omitempty" yaml:"sasdStrDir,omitempty"`
-	SasfHouseNumberSuffix string   `xml:"sasfHouseNumberSuffix,omitempty" json:"sasfHouseNumberSuffix,omitempty" yaml:"sasfHouseNumberSuffix,omitempty"`
-	SasnStrName           string   `xml:"sasnStrName,omitempty" json:"sasnStrName,omitempty" yaml:"sasnStrName,omitempty"`
-	SassStrSuffix         string   `xml:"sassStrSuffix,omitempty" json:"sassStrSuffix,omitempty" yaml:"sassStrSuffix,omitempty"`
-	Sath                  string   `xml:"sath,omitempty" json:"sath,omitempty" yaml:"sath,omitempty"`
-	State                 string   `xml:"state,omitempty" json:"state,omitempty" yaml:"state,omitempty"`
-	SubscriptionBuilt     bool     `xml:"subscriptionBuilt,omitempty" json:"subscriptionBuilt,omitempty" yaml:"subscriptionBuilt,omitempty"`
-	Supplement            bool     `xml:"supplement,omitempty" json:"supplement,omitempty" yaml:"supplement,omitempty"`
-	TelephoneNumber       string   `xml:"telephoneNumber,omitempty" json:"telephoneNumber,omitempty" yaml:"telephoneNumber,omitempty"`
-	Version               int64    `xml:"version,omitempty" json:"version,omitempty" yaml:"version,omitempty"`
-	WirelessPin           string   `xml:"wirelessPin,omitempty" json:"wirelessPin,omitempty" yaml:"wirelessPin,omitempty"`
-	ZipCode               string   `xml:"zipCode,omitempty" json:"zipCode,omitempty" yaml:"zipCode,omitempty"`
+	Npdi                  string    `xml:"npdi,omitempty" json:"npdi,omitempty" yaml:"npdi,omitempty"`
+	NumberOfTns           int64     `xml:"numberOfTns,omitempty" json:"numberOfTns,omitempty" yaml:"numberOfTns,omitempty"`
+	PortOutAssignedEntity string    `xml:"portOutAssignedEntity,omitempty" json:"portOutAssignedEntity,omitempty" yaml:"portOutAssignedEntity,omitempty"`
+	PurchaseOrderNumber   string    `xml:"purchaseOrderNumber,omitempty" json:"purchaseOrderNumber,omitempty" yaml:"purchaseOrderNumber,omitempty"`
+	Remarks               string    `xml:"remarks,omitempty" json:"remarks,omitempty" yaml:"remarks,omitempty"`
+	Room                  string    `xml:"room,omitempty" json:"room,omitempty" yaml:"room,omitempty"`
+	SadloAdditionalInfo   string    `xml:"sadloAdditionalInfo,omitempty" json:"sadloAdditionalInfo,omitempty" yaml:"sadloAdditionalInfo,omitempty"`
+	SanoHouseNumber       string    `xml:"sanoHouseNumber,omitempty" json:"sanoHouseNumber,omitempty" yaml:"sanoHouseNumber,omitempty"`
+	SaprHousePrefix       string    `xml:"saprHousePrefix,omitempty" json:"saprHousePrefix,omitempty" yaml:"saprHousePrefix,omitempty"`
+	SasdStrDir            string    `xml:"sasdStrDir,omitempty" json:"sasdStrDir,omitempty" yaml:"sasdStrDir,omitempty"`
+	SasfHouseNumberSuffix string    `xml:"sasfHouseNumberSuffix,omitempty" json:"sasfHouseNumberSuffix,omitempty" yaml:"sasfHouseNumberSuffix,omitempty"`
+	SasnStrName           string    `xml:"sasnStrName,omitempty" json:"sasnStrName,omitempty" yaml:"sasnStrName,omitempty"`
+	SassStrSuffix         string    `xml:"sassStrSuffix,omitempty" json:"sassStrSuffix,omitempty" yaml:"sassStrSuffix,omitempty"`
+	Sath                  string    `xml:"sath,omitempty" json:"sath,omitempty" yaml:"sath,omitempty"`
+	State                 string    `xml:"state,omitempty" json:"state,omitempty" yaml:"state,omitempty"`
+	SubscriptionBuilt     bool      `xml:"subscriptionBuilt,omitempty" json:"subscriptionBuilt,omitempty" yaml:"subscriptionBuilt,omitempty"`
+	Supplement            bool      `xml:"supplement,omitempty" json:"supplement,omitempty" yaml:"supplement,omitempty"`
+	TelephoneNumber       string    `xml:"telephoneNumber,omitempty" json:"telephoneNumber,omitempty" yaml:"telephoneNumber,omitempty"`
+	Version               int64     `xml:"version,omitempty" json:"version,omitempty" yaml:"version,omitempty"`
+	WirelessPin           string    `xml:"wirelessPin,omitempty" json:"wirelessPin,omitempty" yaml:"wirelessPin,omitempty"`
+	ZipCode               string    `xml:"zipCode,omitempty" json:"zipCode,omitempty" yaml:"zipCode,omitempty"`
 }
 
 // OrderNumber was auto-generated from WSDL.
 type OrderNumber struct {
-	Tn                      string         `xml:"tn,omitempty" json:"tn,omitempty" yaml:"tn,omitempty"`
-	Mou                     string         `xml:"mou,omitempty" json:"mou,omitempty" yaml:"mou,omitempty"`
-	RouteLabel              string         `xml:"routeLabel,omitempty" json:"routeLabel,omitempty" yaml:"routeLabel,omitempty"`
-	CustomName              string         `xml:"customName,omitempty" json:"customName,omitempty" yaml:"customName,omitempty"`
-	CnamDelivery            bool           `xml:"cnamDelivery,omitempty" json:"cnamDelivery,omitempty" yaml:"cnamDelivery,omitempty"`
-	CnamStorage             bool           `xml:"cnamStorage,omitempty" json:"cnamStorage,omitempty" yaml:"cnamStorage,omitempty"`
-	CnamStorageName         string         `xml:"cnamStorageName,omitempty" json:"cnamStorageName,omitempty" yaml:"cnamStorageName,omitempty"`
-	PeerlessMsgProvisioning string         `xml:"peerlessMsgProvisioning,omitempty" json:"peerlessMsgProvisioning,omitempty" yaml:"peerlessMsgProvisioning,omitempty"`
-	Sms                     bool           `xml:"sms,omitempty" json:"sms,omitempty" yaml:"sms,omitempty"`
-	E911                    bool           `xml:"e911,omitempty" json:"e911,omitempty" yaml:"e911,omitempty"`
+	Tn                      string          `xml:"tn,omitempty" json:"tn,omitempty" yaml:"tn,omitempty"`
+	Mou                     string          `xml:"mou,omitempty" json:"mou,omitempty" yaml:"mou,omitempty"`
+	RouteLabel              string          `xml:"routeLabel,omitempty" json:"routeLabel,omitempty" yaml:"routeLabel,omitempty"`
+	CustomName              string          `xml:"customName,omitempty" json:"customName,omitempty" yaml:"customName,omitempty"`
+	CnamDelivery            bool            `xml:"cnamDelivery,omitempty" json:"cnamDelivery,omitempty" yaml:"cnamDelivery,omitempty"`
+	CnamStorage             bool            `xml:"cnamStorage,omitempty" json:"cnamStorage,omitempty" yaml:"cnamStorage,omitempty"`
+	CnamStorageName         string          `xml:"cnamStorageName,omitempty" json:"cnamStorageName,omitempty" yaml:"cnamStorageName,omitempty"`
+	PeerlessMsgProvisioning string          `xml:"peerlessMsgProvisioning,omitempty" json:"peerlessMsgProvisioning,omitempty" yaml:"peerlessMsgProvisioning,omitempty"`
+	Sms                     bool            `xml:"sms,omitempty" json:"sms,omitempty" yaml:"sms,omitempty"`
+	E911                    bool            `xml:"e911,omitempty" json:"e911,omitempty" yaml:"e911,omitempty"`
 	Address                 *Apie911Address `xml:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty"`
 }
 
@@ -270,11 +264,6 @@ type OrderSearchDetails struct {
 	Notes            []Note        `xml:"notes,omitempty" json:"notes,omitempty" yaml:"notes,omitempty"`
 }
 
-// PonOrders was auto-generated from WSDL.
-type PonOrders struct {
-	Result []ResultPONOrderDetails `xml:"result>ponOrders,omitempty" json:"result>ponOrders,omitempty" yaml:"result>ponOrders,omitempty"`
-}
-
 // PortPSNumber was auto-generated from WSDL.
 type PortPSNumber struct {
 	Number      string `xml:"number,omitempty" json:"number,omitempty" yaml:"number,omitempty"`
@@ -289,12 +278,6 @@ type PortPSNumber struct {
 	OffNet      string `xml:"offNet,omitempty" json:"offNet,omitempty" yaml:"offNet,omitempty"`
 	Portable    string `xml:"portable,omitempty" json:"portable,omitempty" yaml:"portable,omitempty"`
 }
-
-// PortPSResponse was auto-generated from WSDL.
-type PortPSResponse struct {
-	PortPsNumbers []string `xml:"portPsNumbers,omitempty" json:"portPsNumbers,omitempty" yaml:"portPsNumbers,omitempty"`
-}
-
 
 // PortabilityCheckRequest was auto-generated from WSDL.
 type PortabilityCheckRequest struct {
@@ -341,11 +324,10 @@ type StateVo struct {
 
 // SupplementInfo was auto-generated from WSDL.
 type SupplementInfo struct {
-	OrderID int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
-	Type    int64    `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	OrderID int64     `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	Type    int64     `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
 	DueDate *DateTime `xml:"dueDate,omitempty" json:"dueDate,omitempty" yaml:"dueDate,omitempty"`
 }
-
 
 // TfOrderNumber was auto-generated from WSDL.
 type TfOrderNumber struct {
@@ -360,24 +342,24 @@ type TfOrderNumber struct {
 // TnInventory was auto-generated from WSDL.
 type TnInventory struct {
 	Address                 *Apie911Address `xml:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty"`
-	Category                string         `xml:"category,omitempty" json:"category,omitempty" yaml:"category,omitempty"`
-	CnamDeliveryProvisioned bool           `xml:"cnamDeliveryProvisioned,omitempty" json:"cnamDeliveryProvisioned,omitempty" yaml:"cnamDeliveryProvisioned,omitempty"`
-	CnamStorageName         string         `xml:"cnamStorageName,omitempty" json:"cnamStorageName,omitempty" yaml:"cnamStorageName,omitempty"`
-	Coverage                string         `xml:"coverage,omitempty" json:"coverage,omitempty" yaml:"coverage,omitempty"`
-	CustomName              string         `xml:"customName,omitempty" json:"customName,omitempty" yaml:"customName,omitempty"`
-	Destination             string         `xml:"destination,omitempty" json:"destination,omitempty" yaml:"destination,omitempty"`
-	E911Provisioned         bool           `xml:"e911Provisioned,omitempty" json:"e911Provisioned,omitempty" yaml:"e911Provisioned,omitempty"`
-	Entity                  string         `xml:"entity,omitempty" json:"entity,omitempty" yaml:"entity,omitempty"`
-	Lata                    int64          `xml:"lata,omitempty" json:"lata,omitempty" yaml:"lata,omitempty"`
-	Location                string         `xml:"location,omitempty" json:"location,omitempty" yaml:"location,omitempty"`
+	Category                string          `xml:"category,omitempty" json:"category,omitempty" yaml:"category,omitempty"`
+	CnamDeliveryProvisioned bool            `xml:"cnamDeliveryProvisioned,omitempty" json:"cnamDeliveryProvisioned,omitempty" yaml:"cnamDeliveryProvisioned,omitempty"`
+	CnamStorageName         string          `xml:"cnamStorageName,omitempty" json:"cnamStorageName,omitempty" yaml:"cnamStorageName,omitempty"`
+	Coverage                string          `xml:"coverage,omitempty" json:"coverage,omitempty" yaml:"coverage,omitempty"`
+	CustomName              string          `xml:"customName,omitempty" json:"customName,omitempty" yaml:"customName,omitempty"`
+	Destination             string          `xml:"destination,omitempty" json:"destination,omitempty" yaml:"destination,omitempty"`
+	E911Provisioned         bool            `xml:"e911Provisioned,omitempty" json:"e911Provisioned,omitempty" yaml:"e911Provisioned,omitempty"`
+	Entity                  string          `xml:"entity,omitempty" json:"entity,omitempty" yaml:"entity,omitempty"`
+	Lata                    int64           `xml:"lata,omitempty" json:"lata,omitempty" yaml:"lata,omitempty"`
+	Location                string          `xml:"location,omitempty" json:"location,omitempty" yaml:"location,omitempty"`
 	ModifiedDate            *DateTime       `xml:"modifiedDate,omitempty" json:"modifiedDate,omitempty" yaml:"modifiedDate,omitempty"`
-	Number                  string         `xml:"number,omitempty" json:"number,omitempty" yaml:"number,omitempty"`
-	NumberType              string         `xml:"numberType,omitempty" json:"numberType,omitempty" yaml:"numberType,omitempty"`
-	RcAbbrev                string         `xml:"rcAbbrev,omitempty" json:"rcAbbrev,omitempty" yaml:"rcAbbrev,omitempty"`
-	Residency               string         `xml:"residency,omitempty" json:"residency,omitempty" yaml:"residency,omitempty"`
-	SmsProvisioned          bool           `xml:"smsProvisioned,omitempty" json:"smsProvisioned,omitempty" yaml:"smsProvisioned,omitempty"`
-	State                   string         `xml:"state,omitempty" json:"state,omitempty" yaml:"state,omitempty"`
-	Status                  string         `xml:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty"`
+	Number                  string          `xml:"number,omitempty" json:"number,omitempty" yaml:"number,omitempty"`
+	NumberType              string          `xml:"numberType,omitempty" json:"numberType,omitempty" yaml:"numberType,omitempty"`
+	RcAbbrev                string          `xml:"rcAbbrev,omitempty" json:"rcAbbrev,omitempty" yaml:"rcAbbrev,omitempty"`
+	Residency               string          `xml:"residency,omitempty" json:"residency,omitempty" yaml:"residency,omitempty"`
+	SmsProvisioned          bool            `xml:"smsProvisioned,omitempty" json:"smsProvisioned,omitempty" yaml:"smsProvisioned,omitempty"`
+	State                   string          `xml:"state,omitempty" json:"state,omitempty" yaml:"state,omitempty"`
+	Status                  string          `xml:"status,omitempty" json:"status,omitempty" yaml:"status,omitempty"`
 }
 
 // TnInventoryForApiSearchParams was auto-generated from WSDL.
