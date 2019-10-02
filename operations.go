@@ -51,7 +51,7 @@ type response struct {
 }
 
 type activateSOA struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        []string  `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
@@ -60,7 +60,7 @@ type activateSOAResponse struct {
 }
 
 type addNotes struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        string    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	Notes          string    `xml:"notes,omitempty" json:"notes,omitempty" yaml:"notes,omitempty"`
 }
@@ -70,7 +70,7 @@ type addNotesResponse struct {
 }
 
 type createException struct {
-	Authentication *AuthInfo      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	ExceptionNote  *ExceptionNote `xml:"excpetionNote,omitempty" json:"excpetionNote,omitempty" yaml:"excpetionNote,omitempty"`
 }
 
@@ -79,7 +79,7 @@ type createExceptionResponse struct {
 }
 
 type disconnectOrder struct {
-	Authentication         *AuthInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication         *authInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	DisconnectOrderRequest *DisconnectOrderRequest `xml:"disconnectOrderRequest,omitempty" json:"disconnectOrderRequest,omitempty" yaml:"disconnectOrderRequest,omitempty"`
 }
 
@@ -88,7 +88,7 @@ type disconnectOrderResponse struct {
 }
 
 type download struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        string    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
@@ -97,7 +97,7 @@ type downloadResponse struct {
 }
 
 type getHierarchicalView struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 }
 
 type getHierarchicalViewResponse struct {
@@ -105,7 +105,7 @@ type getHierarchicalViewResponse struct {
 }
 
 type getNewNumberSearchFilters struct {
-	Authentication *AuthInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	Filters        *NumberSearchParameters `xml:"filters,omitempty" json:"filters,omitempty" yaml:"filters,omitempty"`
 }
 
@@ -114,7 +114,7 @@ type getNewNumberSearchFiltersResponse struct {
 }
 
 type getOrderStatus struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        string    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
@@ -123,7 +123,7 @@ type getOrderStatusResponse struct {
 }
 
 type getOrdersByPONSearch struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	Pon            string    `xml:"pon,omitempty" json:"pon,omitempty" yaml:"pon,omitempty"`
 }
 
@@ -132,25 +132,29 @@ type getOrdersByPONSearchResponse struct {
 }
 
 type getPortInRelatedOrders struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        int64     `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
 type getPortInRelatedOrdersResponse struct {
-	Return *RelatedOrders `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return struct{
+		Result []ResultOrderDetails `xml:"result>relatedOrders,omitempty" json:"result>relatedOrders,omitempty" yaml:"result>relatedOrders,omitempty"`
+	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 type getStatusByNumberSearch struct {
-	Authentication  *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication  *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	TelephoneNumber []string  `xml:"telephoneNumber,omitempty" json:"telephoneNumber,omitempty" yaml:"telephoneNumber,omitempty"`
 }
 
 type getStatusByNumberSearchResponse struct {
-	Return *NumberStatus `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return struct{
+		Result []string `xml:"result>entry,omitempty" json:"result>entry,omitempty" yaml:"result>entry,omitempty"`
+	} `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 type getTnInventoryReport struct {
-	Authentication *AuthInfo                      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo                      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	SearchParams   *TnInventoryForApiSearchParams `xml:"searchParams,omitempty" json:"searchParams,omitempty" yaml:"searchParams,omitempty"`
 }
 
@@ -159,7 +163,7 @@ type getTnInventoryReportResponse struct {
 }
 
 type placeOrder struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	Order          *Order    `xml:"order,omitempty" json:"order,omitempty" yaml:"order,omitempty"`
 }
 
@@ -168,7 +172,7 @@ type placeOrderResponse struct {
 }
 
 type placeTFDisconnectOrder struct {
-	Authentication         *AuthInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication         *authInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	DisconnectOrderRequest *DisconnectOrderRequest `xml:"disconnectOrderRequest,omitempty" json:"disconnectOrderRequest,omitempty" yaml:"disconnectOrderRequest,omitempty"`
 }
 
@@ -177,7 +181,7 @@ type placeTFDisconnectOrderResponse struct {
 }
 
 type placeTFOrder struct {
-	Authentication *AuthInfo      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo      `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	TFNOrder       *TollFreeOrder `xml:"TFNOrder,omitempty" json:"TFNOrder,omitempty" yaml:"TFNOrder,omitempty"`
 }
 
@@ -186,7 +190,7 @@ type placeTFOrderResponse struct {
 }
 
 type portabilityCheck struct {
-	Authentication          *AuthInfo                `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication          *authInfo                `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	PortabilityCheckRequest *PortabilityCheckRequest `xml:"portabilityCheckRequest,omitempty" json:"portabilityCheckRequest,omitempty" yaml:"portabilityCheckRequest,omitempty"`
 }
 
@@ -195,7 +199,7 @@ type portabilityCheckResponse struct {
 }
 
 type searchNumbers struct {
-	Authentication *AuthInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo               `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	Filters        *NumberSearchParameters `xml:"filters,omitempty" json:"filters,omitempty" yaml:"filters,omitempty"`
 }
 
@@ -204,9 +208,9 @@ type searchNumbersResponse struct {
 }
 
 type searchOrderDetailsByOrderId struct {
-	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderID        int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
-	OrderType      string   `xml:"orderType,omitempty" json:"orderType,omitempty" yaml:"orderType,omitempty"`
+	Authentication *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	OrderID        int64     `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderType      string    `xml:"orderType,omitempty" json:"orderType,omitempty" yaml:"orderType,omitempty"`
 }
 
 type searchOrderDetailsByOrderIdResponse struct {
@@ -214,7 +218,7 @@ type searchOrderDetailsByOrderIdResponse struct {
 }
 
 type supplementOrder struct {
-	Authentication *AuthInfo       `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo       `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	SupplementInfo *SupplementInfo `xml:"supplementInfo,omitempty" json:"supplementInfo,omitempty" yaml:"supplementInfo,omitempty"`
 	Order          *Order          `xml:"order,omitempty" json:"order,omitempty" yaml:"order,omitempty"`
 }
@@ -224,7 +228,7 @@ type supplementOrderResponse struct {
 }
 
 type upload struct {
-	Authentication *AuthInfo     `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo    `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	OrderID        string       `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	Attachments    []Attachment `xml:"attachments,omitempty" json:"attachments,omitempty" yaml:"attachments,omitempty"`
 }
@@ -234,7 +238,7 @@ type uploadResponse struct {
 }
 
 type validateE911Address struct {
-	Authentication *AuthInfo    `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	Authentication *authInfo   `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
 	Address        BaseAddress `xml:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty"`
 }
 
@@ -243,8 +247,8 @@ type validateE911AddressResponse struct {
 }
 
 type viewNumberDetails struct {
-	Authentication  *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	TelephoneNumber []string `xml:"telephoneNumber,omitempty" json:"telephoneNumber,omitempty" yaml:"telephoneNumber,omitempty"`
+	Authentication  *authInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
+	TelephoneNumber []string  `xml:"telephoneNumber,omitempty" json:"telephoneNumber,omitempty" yaml:"telephoneNumber,omitempty"`
 }
 
 type viewNumberDetailsResponse struct {

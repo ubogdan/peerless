@@ -86,12 +86,7 @@ type Attachment struct {
 	FileName    string `xml:"fileName,omitempty" json:"fileName,omitempty" yaml:"fileName,omitempty"`
 }
 
-// AuthInfo was auto-generated from WSDL.
-type AuthInfo struct {
-	Customer string `xml:"customer,omitempty" json:"customer,omitempty" yaml:"customer,omitempty"`
-	PassCode string `xml:"passCode,omitempty" json:"passCode,omitempty" yaml:"passCode,omitempty"`
-	UserId   string `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
-}
+
 
 // BaseAddress was auto-generated from WSDL.
 type BaseAddress struct {
@@ -164,11 +159,6 @@ type NumberSearchParameters struct {
 	Result       []ResultTN `xml:"result>tn,omitempty" json:"result>tn,omitempty" yaml:"result>tn,omitempty"`
 	SelectedTN   []int64    `xml:"selectedTN>tn,omitempty" json:"selectedTN>tn,omitempty" yaml:"selectedTN>tn,omitempty"`
 	TnCount      int64      `xml:"tnCount,omitempty" json:"tnCount,omitempty" yaml:"tnCount,omitempty"`
-}
-
-// NumberStatus was auto-generated from WSDL.
-type NumberStatus struct {
-	Result []string `xml:"result>entry,omitempty" json:"result>entry,omitempty" yaml:"result>entry,omitempty"`
 }
 
 // NxxVo was auto-generated from WSDL.
@@ -317,11 +307,6 @@ type RateCenterVo struct {
 	NpasVo []NpaVo `xml:"npasVo,omitempty" json:"npasVo,omitempty" yaml:"npasVo,omitempty"`
 }
 
-// RelatedOrders was auto-generated from WSDL.
-type RelatedOrders struct {
-	Result []ResultOrderDetails `xml:"result>relatedOrders,omitempty" json:"result>relatedOrders,omitempty" yaml:"result>relatedOrders,omitempty"`
-}
-
 // ResultOrderDetails was auto-generated from WSDL.
 type ResultOrderDetails struct {
 	OrderNumber string `xml:"orderNumber,omitempty" json:"orderNumber,omitempty" yaml:"orderNumber,omitempty"`
@@ -432,6 +417,8 @@ type TollFreeOrder struct {
 	TollFreeOrderNumbers    []TfOrderNumber `xml:"tollFreeOrderNumbers>tollFreeOrderNumbers,omitempty" json:"tollFreeOrderNumbers>tollFreeOrderNumbers,omitempty" yaml:"tollFreeOrderNumbers>tollFreeOrderNumbers,omitempty"`
 }
 
-
-
-
+type authInfo struct {
+	Customer string `xml:"customer,omitempty" json:"customer,omitempty" yaml:"customer,omitempty"`
+	PassCode string `xml:"passCode,omitempty" json:"passCode,omitempty" yaml:"passCode,omitempty"`
+	UserId   string `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
+}

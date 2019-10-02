@@ -46,10 +46,10 @@ type APIService interface {
 	GetOrdersByPONSearch(pon string) (*PonOrders, error)
 
 	// GetPortInRelatedOrders godoc
-	GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error)
+	GetPortInRelatedOrders(orderID int64) ([]ResultOrderDetails, error)
 
 	// GetStatusByNumberSearch godoc
-	GetStatusByNumberSearch(telephoneNumber []string) (*NumberStatus, error)
+	GetStatusByNumberSearch(telephoneNumber []string) ([]string, error)
 
 	// GetTnInventoryReport godoc
 	GetTnInventoryReport(searchParams *TnInventoryForApiSearchParams) ([]TnInventory, error)
@@ -90,7 +90,7 @@ func New(url, customer, passcode, userid string) APIService {
 	return &service{
 		URL:       url,
 		Namespace: Namespace,
-		Authentication: &AuthInfo{
+		Authentication: &authInfo{
 			Customer: customer,
 			PassCode: passcode,
 			UserId:   userid,
@@ -110,7 +110,7 @@ type service struct {
 	Header                 interface{}  // Optional SOAP Header
 	ContentType            string       // Optional Content-Type (default text/xml)
 	Config                 *http.Client // Optional HTTP client
-	Authentication         *AuthInfo    // Authentication
+	Authentication         *authInfo    // Authentication
 }
 
 // ActivateSOA was auto-generated from WSDL.
@@ -248,7 +248,7 @@ func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
 }
 
 // GetPortInRelatedOrders was auto-generated from WSDL.
-func (s *service) GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error) {
+func (s *service) GetPortInRelatedOrders(orderID int64) ([]ResultOrderDetails, error) {
 	req := request{
 		GetPortInRelatedOrders: &getPortInRelatedOrders{
 			Authentication: s.Authentication,
@@ -259,11 +259,11 @@ func (s *service) GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error) 
 	if err != nil {
 		return nil, err
 	}
-	return res.GetPortInRelatedOrders.Return, nil
+	return res.GetPortInRelatedOrders.Return.Result, nil
 }
 
 // GetStatusByNumberSearch was auto-generated from WSDL.
-func (s *service) GetStatusByNumberSearch(telephoneNumber []string) (*NumberStatus, error) {
+func (s *service) GetStatusByNumberSearch(telephoneNumber []string) ([]string, error) {
 	req := request{
 		GetStatusByNumberSearch: &getStatusByNumberSearch{
 			Authentication:  s.Authentication,
@@ -274,7 +274,7 @@ func (s *service) GetStatusByNumberSearch(telephoneNumber []string) (*NumberStat
 	if err != nil {
 		return nil, err
 	}
-	return res.GetStatusByNumberSearch.Return, nil
+	return res.GetStatusByNumberSearch.Return.Result, nil
 }
 
 // GetTnInventoryReport was auto-generated from WSDL.
