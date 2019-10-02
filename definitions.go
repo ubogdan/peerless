@@ -66,18 +66,18 @@ type Exception struct {
 // ActivateSOA was auto-generated from WSDL.
 type ActivateSOA struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        []string `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        []string `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
 // ActivateSOAResponse was auto-generated from WSDL.
 type ActivateSOAResponse struct {
-	Return *bool `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return bool `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 // AddNotes was auto-generated from WSDL.
 type AddNotes struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	Notes          string   `xml:"notes,omitempty" json:"notes,omitempty" yaml:"notes,omitempty"`
 }
 
@@ -124,7 +124,7 @@ type BaseAddress struct {
 // CreateException was auto-generated from WSDL.
 type CreateException struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	ExcpetionNote  *EMailVo  `xml:"excpetionNote,omitempty" json:"excpetionNote,omitempty" yaml:"excpetionNote,omitempty"`
+	ExceptionNote  *ExceptionNote  `xml:"excpetionNote,omitempty" json:"excpetionNote,omitempty" yaml:"excpetionNote,omitempty"`
 }
 
 // CreateExceptionResponse was auto-generated from WSDL.
@@ -158,17 +158,17 @@ type DisconnectTns struct {
 // Download was auto-generated from WSDL.
 type Download struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
 // DownloadResponse was auto-generated from WSDL.
 type DownloadResponse struct {
-	Return []*Attachment `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return []Attachment `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
-// EMailVo was auto-generated from WSDL.
-type EMailVo struct {
-	EmailId       string `xml:"emailId,omitempty" json:"emailId,omitempty" yaml:"emailId,omitempty"`
+// ExcpetionNote was auto-generated from WSDL.
+type ExceptionNote struct {
+	EmailID       string `xml:"emailId,omitempty" json:"emailId,omitempty" yaml:"emailId,omitempty"`
 	ExceptionNote string `xml:"exceptionNote,omitempty" json:"exceptionNote,omitempty" yaml:"exceptionNote,omitempty"`
 	Subject       string `xml:"subject,omitempty" json:"subject,omitempty" yaml:"subject,omitempty"`
 }
@@ -197,7 +197,7 @@ type GetNewNumberSearchFiltersResponse struct {
 // GetOrderStatus was auto-generated from WSDL.
 type GetOrderStatus struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        string   `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
 // GetOrderStatusResponse was auto-generated from WSDL.
@@ -219,7 +219,7 @@ type GetOrdersByPONSearchResponse struct {
 // GetPortInRelatedOrders was auto-generated from WSDL.
 type GetPortInRelatedOrders struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 }
 
 // GetPortInRelatedOrdersResponse was auto-generated from WSDL.
@@ -267,7 +267,7 @@ type Note struct {
 	Type     string `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
 	Action   *Action `xml:"action,omitempty" json:"action,omitempty" yaml:"action,omitempty"`
 	UserName string `xml:"userName,omitempty" json:"userName,omitempty" yaml:"userName,omitempty"`
-	UserId   int    `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
+	UserID   int    `xml:"userId,omitempty" json:"userId,omitempty" yaml:"userId,omitempty"`
 }
 
 // NpaVo was auto-generated from WSDL.
@@ -533,7 +533,7 @@ type SearchNumbersResponse struct {
 // SearchOrderDetailsByOrderId was auto-generated from WSDL.
 type SearchOrderDetailsByOrderId struct {
 	Authentication *AuthInfo `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	OrderType      string   `xml:"orderType,omitempty" json:"orderType,omitempty" yaml:"orderType,omitempty"`
 }
 
@@ -551,7 +551,7 @@ type StateVo struct {
 
 // SupplementInfo was auto-generated from WSDL.
 type SupplementInfo struct {
-	OrderId int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID int64    `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	Type    int64    `xml:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
 	DueDate *DateTime `xml:"dueDate,omitempty" json:"dueDate,omitempty" yaml:"dueDate,omitempty"`
 }
@@ -631,7 +631,7 @@ type TollFreeOrder struct {
 	RequestedDueDate        string          `xml:"requestedDueDate,omitempty" json:"requestedDueDate,omitempty" yaml:"requestedDueDate,omitempty"`
 	ActivateReservation     string          `xml:"activateReservation,omitempty" json:"activateReservation,omitempty" yaml:"activateReservation,omitempty"`
 	EndUserName             string          `xml:"endUserName,omitempty" json:"endUserName,omitempty" yaml:"endUserName,omitempty"`
-	RespOrgId               string          `xml:"respOrgId,omitempty" json:"respOrgId,omitempty" yaml:"respOrgId,omitempty"`
+	RespOrgID               string          `xml:"respOrgId,omitempty" json:"respOrgId,omitempty" yaml:"respOrgId,omitempty"`
 	DefaultAos              string          `xml:"defaultAos,omitempty" json:"defaultAos,omitempty" yaml:"defaultAos,omitempty"`
 	DefaultDestination      string          `xml:"defaultDestination,omitempty" json:"defaultDestination,omitempty" yaml:"defaultDestination,omitempty"`
 	DefaultPayPhoneBlocking string          `xml:"defaultPayPhoneBlocking,omitempty" json:"defaultPayPhoneBlocking,omitempty" yaml:"defaultPayPhoneBlocking,omitempty"`
@@ -641,13 +641,13 @@ type TollFreeOrder struct {
 // Upload was auto-generated from WSDL.
 type Upload struct {
 	Authentication *AuthInfo     `xml:"authentication,omitempty" json:"authentication,omitempty" yaml:"authentication,omitempty"`
-	OrderId        string       `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
+	OrderID        string       `xml:"orderId,omitempty" json:"orderId,omitempty" yaml:"orderId,omitempty"`
 	Attachments    []Attachment `xml:"attachments,omitempty" json:"attachments,omitempty" yaml:"attachments,omitempty"`
 }
 
 // UploadResponse was auto-generated from WSDL.
 type UploadResponse struct {
-	Return *bool `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
+	Return bool `xml:"return,omitempty" json:"return,omitempty" yaml:"return,omitempty"`
 }
 
 // ValidateE911Address was auto-generated from WSDL.

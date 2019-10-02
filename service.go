@@ -3,16 +3,15 @@ package peerless
 
 import (
 	"net/http"
-	"reflect"
 )
 
 const (
 	// Envelope is a SOAP envelope.
-	Namespace          = "http://publicapi.api.s2.peerless.com/"
+	Namespace = "http://publicapi.api.s2.peerless.com/"
 	// ProductionEndpoint endpoint used in production
 	ProductionEndpoint = "https://animate.peerlessnetwork.com:8181/animateapi/axis/APIService"
 	// StagingEndpoint endpoint used for development
-	StagingEndpoint    = "https://aniweb02.peerlessnetwork.com:8181/animateapi/axis/APIService"
+	StagingEndpoint = "https://aniweb02.peerlessnetwork.com:8181/animateapi/axis/APIService"
 )
 
 // APIService was auto-generated from WSDL
@@ -20,64 +19,64 @@ const (
 type APIService interface {
 
 	// ActivateSOA godoc
-	ActivateSOA(ActivateSOA *ActivateSOA) (*ActivateSOAResponse, error)
+	ActivateSOA(orderID []string) (bool, error)
 
 	// AddNotes godoc
-	AddNotes(AddNotes *AddNotes) (*AddNotesResponse, error)
+	AddNotes(orderID, note string) (bool, error)
 
 	// CreateException godoc
-	CreateException(CreateException *CreateException) (*CreateExceptionResponse, error)
+	CreateException(ExceptionNote *ExceptionNote) (bool, error)
 
 	// DisconnectOrder godoc
-	DisconnectOrder(DisconnectOrder *DisconnectOrder) (*DisconnectOrderResponse, error)
+	DisconnectOrder(DisconnectOrderRequest *DisconnectOrderRequest) (string, error)
 
 	// Download godoc
-	Download(Download *Download) (*DownloadResponse, error)
+	Download(orderID string) ([]Attachment, error)
 
 	// GetHierarchicalView godoc
-	GetHierarchicalView(GetHierarchicalView *GetHierarchicalView) (*GetHierarchicalViewResponse, error)
+	GetHierarchicalView() (*HiearchicalView, error)
 
 	// GetNewNumberSearchFilters godoc
-	GetNewNumberSearchFilters(GetNewNumberSearchFilters *GetNewNumberSearchFilters) (*GetNewNumberSearchFiltersResponse, error)
+	GetNewNumberSearchFilters(filters *NumberSearchParameters) (*NumberSearchParameters, error)
 
 	// GetOrderStatus godoc
-	GetOrderStatus(orderID string) (*GetOrderStatusResponse, error)
+	GetOrderStatus(orderID string) (string, error)
 
 	// GetOrdersByPONSearch godoc
-	GetOrdersByPONSearch(GetOrdersByPONSearch *GetOrdersByPONSearch) (*GetOrdersByPONSearchResponse, error)
+	GetOrdersByPONSearch(pon string) (*PonOrders, error)
 
 	// GetPortInRelatedOrders godoc
-	GetPortInRelatedOrders(GetPortInRelatedOrders *GetPortInRelatedOrders) (*GetPortInRelatedOrdersResponse, error)
+	GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error)
 
 	// GetStatusByNumberSearch godoc
-	GetStatusByNumberSearch(GetStatusByNumberSearch *GetStatusByNumberSearch) (*GetStatusByNumberSearchResponse, error)
+	GetStatusByNumberSearch(telephoneNumber []string) (*NumberStatus, error)
 
 	// GetTnInventoryReport godoc
-	GetTnInventoryReport(GetTnInventoryReport *GetTnInventoryReport) (*GetTnInventoryReportResponse, error)
+	GetTnInventoryReport(searchParams *TnInventoryForApiSearchParams) ([]TnInventory, error)
 
 	// PlaceOrder was godoc
-	PlaceOrder(PlaceOrder *PlaceOrder) (*PlaceOrderResponse, error)
+	PlaceOrder(order *Order) (string, error)
 
 	// PlaceTFDisconnectOrder godoc
-	PlaceTFDisconnectOrder(PlaceTFDisconnectOrder *PlaceTFDisconnectOrder) (*PlaceTFDisconnectOrderResponse, error)
+	PlaceTFDisconnectOrder(disconnectOrderRequest *DisconnectOrderRequest) (string, error)
 
 	// PlaceTFOrder godoc
-	PlaceTFOrder(PlaceTFOrder *PlaceTFOrder) (*PlaceTFOrderResponse, error)
+	PlaceTFOrder(order *TollFreeOrder) (string, error)
 
 	// PortabilityCheck godoc
-	PortabilityCheck(PortabilityCheck *PortabilityCheck) (*PortabilityCheckResponse, error)
+	PortabilityCheck(portabilityCheckRequest *PortabilityCheckRequest) ([]string, error)
 
 	// SearchNumbers godoc
-	SearchNumbers(SearchNumbers *SearchNumbers) (*SearchNumbersResponse, error)
+	SearchNumbers(filters *NumberSearchParameters) (*NumberSearchParameters, error)
 
 	// SearchOrderDetailsByOrderId godoc
-	SearchOrderDetailsByOrderId(SearchOrderDetailsByOrderId *SearchOrderDetailsByOrderId) (*SearchOrderDetailsByOrderIdResponse, error)
+	SearchOrderDetailsByOrderId(orderID int64, orderType string) (*OrderSearch, error)
 
 	// SupplementOrder godoc
-	SupplementOrder(SupplementOrder *SupplementOrder) (*SupplementOrderResponse, error)
+	SupplementOrder(supplementInfo *SupplementInfo, order *Order) (string, error)
 
 	// Upload godoc
-	Upload(Upload *Upload) (*UploadResponse, error)
+	Upload(orderID string, attachments []Attachment) (bool, error)
 
 	// ValidateE911Address godoc
 	ValidateE911Address(address BaseAddress) (*ValidateE911AddressResponse, error)
@@ -85,8 +84,6 @@ type APIService interface {
 	// ViewNumberDetails godoc
 	ViewNumberDetails(numbers []string) (*ViewNumberDetailsResponse, error)
 }
-
-
 
 // New creates an initializes a API service.
 func New(url, customer, passcode, userid string) APIService {
@@ -117,247 +114,305 @@ type service struct {
 }
 
 // ActivateSOA was auto-generated from WSDL.
-func (s *service) ActivateSOA(ActivateSOA *ActivateSOA) (*ActivateSOAResponse, error) {
+func (s *service) ActivateSOA(orderID []string) (bool, error) {
 	req := Request{
-		ActivateSOA: ActivateSOA,
+		ActivateSOA: &ActivateSOA{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+		},
 	}
-	res,err := s.call("activateSOA", req);
-	if  err != nil {
-		return nil, err
+	res, err := s.call("activateSOA", req)
+	if err != nil {
+		return false, err
 	}
-	return res.ActivateSOA, nil
+	return res.ActivateSOA.Return, nil
 }
 
 // AddNotes was auto-generated from WSDL.
-func (s *service) AddNotes(AddNotes *AddNotes) (*AddNotesResponse, error) {
+func (s *service) AddNotes(orderID, note string) (bool, error) {
 	req := Request{
-		AddNotes: AddNotes,
+		AddNotes: &AddNotes{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+			Notes:          note,
+		},
 	}
-	res,err := s.call("addNotes", req);
+	res, err := s.call("addNotes", req)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return res.AddNotes, nil
+	return res.AddNotes.Return, nil
 }
 
 // CreateException was auto-generated from WSDL.
-func (s *service) CreateException(CreateException *CreateException) (*CreateExceptionResponse, error) {
+func (s *service) CreateException(ExceptionNote *ExceptionNote) (bool, error) {
 	req := Request{
-		CreateException: CreateException,
+		CreateException: &CreateException{
+			Authentication: s.Authentication,
+			ExceptionNote:  ExceptionNote,
+		},
 	}
-	res,err := s.call("createException", req);
-	if  err != nil {
-		return nil, err
+	res, err := s.call("createException", req)
+	if err != nil {
+		return false, err
 	}
-	return res.CreateException, nil
+	return res.CreateException.Return, nil
 }
 
 // DisconnectOrder was auto-generated from WSDL.
-func (s *service) DisconnectOrder(DisconnectOrder *DisconnectOrder) (*DisconnectOrderResponse, error) {
+func (s *service) DisconnectOrder(DisconnectOrderRequest *DisconnectOrderRequest) (string, error) {
 	req := Request{
-		DisconnectOrder: DisconnectOrder,
+		DisconnectOrder: &DisconnectOrder{
+			Authentication:         s.Authentication,
+			DisconnectOrderRequest: DisconnectOrderRequest,
+		},
 	}
-	res,err := s.call("disconnectOrder", req);
+	res, err := s.call("disconnectOrder", req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return res.DisconnectOrder, nil
+	return res.DisconnectOrder.Return, nil
 }
 
 // Download was auto-generated from WSDL.
-func (s *service) Download(Download *Download) (*DownloadResponse, error) {
+func (s *service) Download(orderID string) ([]Attachment, error) {
 	req := Request{
-		Download: Download,
+		Download: &Download{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+		},
 	}
-
-	res,err := s.call("download", req);
-	if  err != nil {
+	res, err := s.call("download", req)
+	if err != nil {
 		return nil, err
 	}
-	return res.Download, nil
+	return res.Download.Return, nil
 }
 
 // GetHierarchicalView was auto-generated from WSDL.
-func (s *service) GetHierarchicalView(GetHierarchicalView *GetHierarchicalView) (*GetHierarchicalViewResponse, error) {
+func (s *service) GetHierarchicalView() (*HiearchicalView, error) {
 	req := Request{
-		GetHierarchicalView: GetHierarchicalView,
+		GetHierarchicalView: &GetHierarchicalView{
+			Authentication: s.Authentication,
+		},
 	}
-	res,err := s.call("getHierarchicalView", req);
-	if  err != nil {
+	res, err := s.call("getHierarchicalView", req)
+	if err != nil {
 		return nil, err
 	}
-	return res.GetHierarchicalView, nil
+	return res.GetHierarchicalView.Return, nil
 }
 
 // GetNewNumberSearchFilters was auto-generated from WSDL.
-func (s *service) GetNewNumberSearchFilters(GetNewNumberSearchFilters *GetNewNumberSearchFilters) (*GetNewNumberSearchFiltersResponse, error) {
+func (s *service) GetNewNumberSearchFilters(filters *NumberSearchParameters) (*NumberSearchParameters, error) {
 	req := Request{
-		GetNewNumberSearchFilters: GetNewNumberSearchFilters,
+		GetNewNumberSearchFilters: &GetNewNumberSearchFilters{
+			Authentication: s.Authentication,
+			Filters:        filters,
+		},
 	}
-	res,err := s.call("getNewNumberSearchFilters", req);
+	res, err := s.call("getNewNumberSearchFilters", req)
 	if err != nil {
 		return nil, err
 	}
-	return res.GetNewNumberSearchFilters, nil
+	return res.GetNewNumberSearchFilters.Return, nil
 }
 
 // GetOrderStatus was auto-generated from WSDL.
-func (s *service) GetOrderStatus(orderID string) (*GetOrderStatusResponse, error) {
+func (s *service) GetOrderStatus(orderID string) (string, error) {
 	req := Request{
 		GetOrderStatus: &GetOrderStatus{
-			OrderId: orderID,
+			OrderID: orderID,
 		},
 	}
-	res,err := s.call("getOrderStatus", req);
+	res, err := s.call("getOrderStatus", req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return res.GetOrderStatus, nil
+	return res.GetOrderStatus.Return, nil
 }
 
 // GetOrdersByPONSearch was auto-generated from WSDL.
-func (s *service) GetOrdersByPONSearch(GetOrdersByPONSearch *GetOrdersByPONSearch) (*GetOrdersByPONSearchResponse, error) {
+func (s *service) GetOrdersByPONSearch(pon string) (*PonOrders, error) {
 	req := Request{
-		GetOrdersByPONSearch: GetOrdersByPONSearch,
+		GetOrdersByPONSearch: &GetOrdersByPONSearch{
+			Authentication: s.Authentication,
+			Pon:            pon,
+		},
 	}
-
-	res,err := s.call("getOrdersByPONSearch", req);
-	if  err != nil {
+	res, err := s.call("getOrdersByPONSearch", req)
+	if err != nil {
 		return nil, err
 	}
-	return res.GetOrdersByPONSearch, nil
+	return res.GetOrdersByPONSearch.Return, nil
 }
 
 // GetPortInRelatedOrders was auto-generated from WSDL.
-func (s *service) GetPortInRelatedOrders(GetPortInRelatedOrders *GetPortInRelatedOrders) (*GetPortInRelatedOrdersResponse, error) {
+func (s *service) GetPortInRelatedOrders(orderID int64) (*RelatedOrders, error) {
 	req := Request{
-		GetPortInRelatedOrders: GetPortInRelatedOrders,
+		GetPortInRelatedOrders: &GetPortInRelatedOrders{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+		},
 	}
-	res,err := s.call("getPortInRelatedOrders", req);
+	res, err := s.call("getPortInRelatedOrders", req)
 	if err != nil {
 		return nil, err
 	}
-	return res.GetPortInRelatedOrders, nil
+	return res.GetPortInRelatedOrders.Return, nil
 }
 
 // GetStatusByNumberSearch was auto-generated from WSDL.
-func (s *service) GetStatusByNumberSearch(GetStatusByNumberSearch *GetStatusByNumberSearch) (*GetStatusByNumberSearchResponse, error) {
+func (s *service) GetStatusByNumberSearch(telephoneNumber []string) (*NumberStatus, error) {
 	req := Request{
-		GetStatusByNumberSearch: GetStatusByNumberSearch,
+		GetStatusByNumberSearch: &GetStatusByNumberSearch{
+			Authentication:  s.Authentication,
+			TelephoneNumber: telephoneNumber,
+		},
 	}
-	res,err := s.call("getStatusByNumberSearch", req);
+	res, err := s.call("getStatusByNumberSearch", req)
 	if err != nil {
 		return nil, err
 	}
-	return res.GetStatusByNumberSearch, nil
+	return res.GetStatusByNumberSearch.Return, nil
 }
 
 // GetTnInventoryReport was auto-generated from WSDL.
-func (s *service) GetTnInventoryReport(GetTnInventoryReport *GetTnInventoryReport) (*GetTnInventoryReportResponse, error) {
+func (s *service) GetTnInventoryReport(searchParams *TnInventoryForApiSearchParams) ([]TnInventory, error) {
 	req := Request{
-		GetTnInventoryReport: GetTnInventoryReport,
+		GetTnInventoryReport: &GetTnInventoryReport{
+			Authentication: s.Authentication,
+			SearchParams:   searchParams,
+		},
 	}
-	res,err := s.call("getTnInventoryReport", req);
-	if  err != nil {
+	res, err := s.call("getTnInventoryReport", req)
+	if err != nil {
 		return nil, err
 	}
-	return res.GetTnInventoryReport, nil
+	return res.GetTnInventoryReport.Return, nil
 }
 
 // PlaceOrder was auto-generated from WSDL.
-func (s *service) PlaceOrder(PlaceOrder *PlaceOrder) (*PlaceOrderResponse, error) {
+func (s *service) PlaceOrder(order *Order) (string, error) {
 	req := Request{
-		PlaceOrder: PlaceOrder,
+		PlaceOrder: &PlaceOrder{
+			Authentication: s.Authentication,
+			Order:          order,
+		},
 	}
-	res,err := s.call("placeOrder", req);
-	if  err != nil {
-		return nil, err
+	res, err := s.call("placeOrder", req)
+	if err != nil {
+		return "", err
 	}
-	return res.PlaceOrder, nil
+	return res.PlaceOrder.Return, nil
 }
 
 // PlaceTFDisconnectOrder was auto-generated from WSDL.
-func (s *service) PlaceTFDisconnectOrder(PlaceTFDisconnectOrder *PlaceTFDisconnectOrder) (*PlaceTFDisconnectOrderResponse, error) {
+func (s *service) PlaceTFDisconnectOrder(disconnectOrderRequest *DisconnectOrderRequest) (string, error) {
 	req := Request{
-		PlaceTFDisconnectOrder: PlaceTFDisconnectOrder,
+		PlaceTFDisconnectOrder: &PlaceTFDisconnectOrder{
+			Authentication:         s.Authentication,
+			DisconnectOrderRequest: disconnectOrderRequest,
+		},
 	}
-	res,err := s.call("placeTFDisconnectOrder", req);
-	if  err != nil {
-		return nil, err
+	res, err := s.call("placeTFDisconnectOrder", req)
+	if err != nil {
+		return "", err
 	}
-	return res.PlaceTFDisconnectOrder, nil
+	return res.PlaceTFDisconnectOrder.Return, nil
 }
 
 // PlaceTFOrder was auto-generated from WSDL.
-func (s *service) PlaceTFOrder(PlaceTFOrder *PlaceTFOrder) (*PlaceTFOrderResponse, error) {
+func (s *service) PlaceTFOrder(order *TollFreeOrder) (string, error) {
 	req := Request{
-		PlaceTFOrder: PlaceTFOrder,
+		PlaceTFOrder: &PlaceTFOrder{
+			Authentication: s.Authentication,
+			TFNOrder:       order,
+		},
 	}
-	res,err := s.call("placeTFOrder", req);
+	res, err := s.call("placeTFOrder", req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return res.PlaceTFOrder, nil
+	return res.PlaceTFOrder.Return, nil
 }
 
 // PortabilityCheck was auto-generated from WSDL.
-func (s *service) PortabilityCheck(PortabilityCheck *PortabilityCheck) (*PortabilityCheckResponse, error) {
+func (s *service) PortabilityCheck(portabilityCheckRequest *PortabilityCheckRequest) ([]string, error) {
 	req := Request{
-		PortabilityCheck: PortabilityCheck,
+		PortabilityCheck: &PortabilityCheck{
+			Authentication:          s.Authentication,
+			PortabilityCheckRequest: portabilityCheckRequest,
+		},
 	}
-	res,err := s.call("portabilityCheck", req);
-	if  err != nil {
+	res, err := s.call("portabilityCheck", req)
+	if err != nil {
 		return nil, err
 	}
-	return res.PortabilityCheck, nil
+	return res.PortabilityCheck.Return.PortPsNumbers, nil
 }
 
 // SearchNumbers was auto-generated from WSDL.
-func (s *service) SearchNumbers(SearchNumbers *SearchNumbers) (*SearchNumbersResponse, error) {
+func (s *service) SearchNumbers(filters *NumberSearchParameters) (*NumberSearchParameters, error) {
 	req := Request{
-		SearchNumbers: SearchNumbers,
+		SearchNumbers: &SearchNumbers{
+			Authentication: s.Authentication,
+			Filters:        filters,
+		},
 	}
-	res,err := s.call("searchNumbers", req);
+	res, err := s.call("searchNumbers", req)
 	if err != nil {
 		return nil, err
 	}
-	return res.SearchNumbers, nil
+	return res.SearchNumbers.Return, nil
 }
 
 // SearchOrderDetailsByOrderId was auto-generated from WSDL.
-func (s *service) SearchOrderDetailsByOrderId(SearchOrderDetailsByOrderId *SearchOrderDetailsByOrderId) (*SearchOrderDetailsByOrderIdResponse, error) {
+func (s *service) SearchOrderDetailsByOrderId(orderID int64, orderType string) (*OrderSearch, error) {
 	req := Request{
-		SearchOrderDetailsByOrderId: SearchOrderDetailsByOrderId,
+		SearchOrderDetailsByOrderId: &SearchOrderDetailsByOrderId{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+			OrderType:      orderType,
+		},
 	}
-	res,err := s.call("searchOrderDetailsByOrderId", req);
+	res, err := s.call("searchOrderDetailsByOrderId", req)
 	if err != nil {
 		return nil, err
 	}
-	return res.SearchOrderDetailsByOrderId, nil
+	return res.SearchOrderDetailsByOrderId.Return, nil
 }
 
 // SupplementOrder was auto-generated from WSDL.
-func (s *service) SupplementOrder(SupplementOrder *SupplementOrder) (*SupplementOrderResponse, error) {
+func (s *service) SupplementOrder(supplementInfo *SupplementInfo, order *Order) (string, error) {
 	req := Request{
-		SupplementOrder: SupplementOrder,
+		SupplementOrder: &SupplementOrder{
+			Authentication: s.Authentication,
+			SupplementInfo: supplementInfo,
+			Order:          order,
+		},
 	}
-	res,err := s.call("supplementOrder", req);
+	res, err := s.call("supplementOrder", req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return res.SupplementOrder, nil
+	return res.SupplementOrder.Return, nil
 }
 
 // Upload was auto-generated from WSDL.
-func (s *service) Upload(Upload *Upload) (*UploadResponse, error) {
+func (s *service) Upload(orderID string, attachments []Attachment) (bool, error) {
 	req := Request{
-		Upload: Upload,
+		Upload: &Upload{
+			Authentication: s.Authentication,
+			OrderID:        orderID,
+			Attachments:    attachments,
+		},
 	}
-	res,err := s.call("upload", req);
+	res, err := s.call("upload", req)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return res.Upload, nil
+	return res.Upload.Return, nil
 }
 
 // ValidateE911Address was auto-generated from WSDL.
@@ -368,8 +423,8 @@ func (s *service) ValidateE911Address(address BaseAddress) (*ValidateE911Address
 			Address:        address,
 		},
 	}
-	res,err := s.call("validateE911Address", req);
-	if  err != nil {
+	res, err := s.call("validateE911Address", req)
+	if err != nil {
 		return nil, err
 	}
 	return res.ValidateE911Address, nil
@@ -383,7 +438,7 @@ func (s *service) ViewNumberDetails(numbers []string) (*ViewNumberDetailsRespons
 			TelephoneNumber: numbers,
 		},
 	}
-	res,err := s.call("viewNumberDetails", req);
+	res, err := s.call("viewNumberDetails", req)
 	if err != nil {
 		return nil, err
 	}
