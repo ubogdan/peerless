@@ -2,6 +2,7 @@ package peerless
 
 import (
 	"bytes"
+	"context"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -21,10 +22,10 @@ func (e *HTTPError) Error() string {
 	return fmt.Sprintf("%q: %q", e.Status, e.Msg)
 }
 
-func (c *service) call(soapAction string, operation request) (*response, error) {
+func (s *service) call(ctx context.Context, soapAction string, operation request) (*response, error) {
 
 	// Envelope is a SOAP envelope.
-	req := struct {
+	payload := struct {
 		XMLName      xml.Name    `xml:"SOAP-ENV:Envelope"`
 		EnvelopeAttr string      `xml:"xmlns:SOAP-ENV,attr"`
 		NSAttr       string      `xml:"xmlns:ns,attr"`
@@ -34,59 +35,61 @@ func (c *service) call(soapAction string, operation request) (*response, error) 
 		Header       interface{} `xml:"SOAP-ENV:Header"`
 		Body         request     `xml:"SOAP-ENV:Body"`
 	}{
-		EnvelopeAttr: c.Envelope,
-		URNAttr:      c.URNamespace,
-		NSAttr:       c.Namespace,
+		EnvelopeAttr: s.Envelope,
+		URNAttr:      s.URNamespace,
+		NSAttr:       s.Namespace,
 		XSIAttr:      "http://www.w3.org/2001/XMLSchema-instance",
-		Header:       c.Header,
+		Header:       s.Header,
 		Body:         operation,
 	}
 
-	if req.EnvelopeAttr == "" {
-		req.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
+	if payload.EnvelopeAttr == "" {
+		payload.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
 	}
-	if req.NSAttr == "" {
-		req.NSAttr = c.URL
+	if payload.NSAttr == "" {
+		payload.NSAttr = s.URL
 	}
 	var b bytes.Buffer
-	err := xml.NewEncoder(&b).Encode(req)
+	err := xml.NewEncoder(&b).Encode(payload)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("Req: %s", b.Bytes())
 
-	cli := c.Config
+	cli := s.Config
 	if cli == nil {
 		cli = http.DefaultClient
 	}
-	r, err := http.NewRequest("POST", c.URL, &b)
+	request, err := http.NewRequest(http.MethodPost, s.URL, &b)
 	if err != nil {
 		return nil, err
 	}
+	request = request.WithContext(ctx) //for cancellation support (if our client cancels, we cancel)
 	// Set Headers
-	if c.UserAgent != "" {
-		r.Header.Add("User-Agent", c.UserAgent)
+	if s.UserAgent != "" {
+		request.Header.Add("User-Agent", s.UserAgent)
 	}
 	var actionName string
-	ct := c.ContentType
+	ct := s.ContentType
 	if ct == "" {
 		ct = "text/xml"
 	}
-	r.Header.Set("Content-Type", ct)
+	request.Header.Set("Content-Type", ct)
 
-	if c.ExcludeActionNamespace {
+	if s.ExcludeActionNamespace {
 		actionName = soapAction
 	} else {
-		actionName = fmt.Sprintf("%s/%s", c.Namespace, soapAction)
+		actionName = fmt.Sprintf("%s/%s", s.Namespace, soapAction)
 	}
-	r.Header.Add("SOAPAction", actionName)
+	request.Header.Add("SOAPAction", actionName)
 
-	resp, err := cli.Do(r)
+	resp, err := cli.Do(request)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
 	if resp.StatusCode != http.StatusOK {
 		// read only the first MiB of the body in error case
 		limReader := io.LimitReader(resp.Body, 1024*1024)
