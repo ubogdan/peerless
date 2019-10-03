@@ -18,43 +18,52 @@ const (
 // APIService was auto-generated from WSDL
 // and defines interface for the remote service. Useful for testing.
 type APIService interface {
-	// ActivateSOA godoc
+	// ActivateSOA The numbers for the given orderId(s) would be npac activated. Only the numbers which are peerless
+	// and offnet numbers would have npac activation skipped.
 	ActivateSOA(ctx context.Context, orderID []string) (bool, error)
 
-	// AddNotes godoc
+	// AddNotes add notes to an Order
 	AddNotes(ctx context.Context, orderID, note string) (bool, error)
 
-	// CreateException godoc
+	// CreateException An Exception Request should be used in the event that your search results do not return the desired
+	// number availability. This request will generate an email notification to a designated Peerless
+	// representative to further investigate. Please include as many details of your desired request in the
+	// body of the email.
 	CreateException(ctx context.Context, ExceptionNote *ExceptionNote) (bool, error)
 
-	// DisconnectOrder godoc
+	// DisconnectOrder If order is soft disconnect with or without features then available date will not be
+	// displayed. And if it is hard disconnect then available date will be shown.
 	DisconnectOrder(ctx context.Context, DisconnectOrderRequest *DisconnectOrderRequest) (string, error)
 
-	// Download godoc
+	// Download This method can be used to upload required attachments to an order
 	Download(ctx context.Context, orderID string) ([]Attachment, error)
 
-	// GetHierarchicalView godoc
+	// GetHierarchicalView Enables a user to identify the full coverage area in Peerless Network’s entire inventory by
+	// State, LATA, Rate Center, NPAs and NXXs.
 	GetHierarchicalView(ctx context.Context) (*HiearchicalView, error)
 
-	// GetNewNumberSearchFilters godoc
+	// GetNewNumberSearchFilters With this operation users can request a list of all possible additional filter options
+	// for a given filter.
 	GetNewNumberSearchFilters(ctx context.Context, filters *NumberSearchParameters) (*NumberSearchParameters, error)
 
-	// GetOrderStatus godoc
+	// GetOrderStatus This operation returns Order Status
 	GetOrderStatus(ctx context.Context, orderID string) (string, error)
 
-	// GetOrdersByPONSearch godoc
+	// GetOrdersByPONSearch  This is used to get the orders based on the PON entered in the request.
 	GetOrdersByPONSearch(ctx context.Context, pon string) ([]ResultPONOrderDetails, error)
 
 	// GetPortInRelatedOrders godoc
 	GetPortInRelatedOrders(ctx context.Context, orderID int64) ([]ResultOrderDetails, error)
 
-	// GetStatusByNumberSearch godoc
+	// GetStatusByNumberSearch This is to get the status of the number given in the request. The number should belong
+	// to the entity in question.
 	GetStatusByNumberSearch(ctx context.Context, telephoneNumber []string) ([]string, error)
 
 	// GetTnInventoryReport godoc
 	GetTnInventoryReport(ctx context.Context, searchParams *TnInventoryForApiSearchParams) ([]TnInventory, error)
 
-	// PlaceOrder was godoc
+	// PlaceOrder was Placing your order will begin the activation process of your selected numbers. This request
+	// includes features and destination instructions to provision your selected numbers.
 	PlaceOrder(ctx context.Context, order *Order) (string, error)
 
 	// PlaceTFDisconnectOrder godoc
@@ -66,22 +75,24 @@ type APIService interface {
 	// PortabilityCheck godoc
 	PortabilityCheck(ctx context.Context, portabilityCheckRequest *PortabilityCheckRequest) ([]string, error)
 
-	// SearchNumbers godoc
+	// SearchNumbers This Operation will search the available inventory for numbers from Peerless.
 	SearchNumbers(ctx context.Context, filters *NumberSearchParameters) (*NumberSearchParameters, error)
 
 	// SearchOrderDetailsByOrderId godoc
 	SearchOrderDetailsByOrderId(ctx context.Context, orderID int64, orderType string) (*OrderSearch, error)
 
-	// SupplementOrder godoc
+	// SupplementOrder Supplement requests for PortIn order. Supported supplement Types:
+	// <type> 1.cancel 2- change due date, 3- all other
 	SupplementOrder(ctx context.Context, supplementInfo *SupplementInfo, order *Order) (string, error)
 
-	// Upload godoc
+	// Upload This method can be used to upload required attachments to an order.
 	Upload(ctx context.Context, orderID string, attachments []Attachment) (bool, error)
 
-	// ValidateE911Address godoc
+	// ValidateE911Address This operation will validate User Address for E911
 	ValidateE911Address(ctx context.Context, address BaseAddress) ([]BaseAddress, error)
 
-	// ViewNumberDetails godoc
+	// ViewNumberDetails This Operation will search all the features for the requested telephone numbers in the
+	// inventory from Peerless.
 	ViewNumberDetails(ctx context.Context, numbers []string) ([]OrderNumber, error)
 }
 
