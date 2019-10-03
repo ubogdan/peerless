@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -55,7 +54,7 @@ func (s *service) call(ctx context.Context, soapAction string, operation request
 		return nil, err
 	}
 
-	log.Printf("Req: %s", b.Bytes())
+	//log.Printf("Req: %s", b.Bytes())
 
 	cli := s.Config
 	if cli == nil {
