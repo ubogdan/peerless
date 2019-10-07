@@ -21,46 +21,18 @@ func (e *HTTPError) Error() string {
 	return fmt.Sprintf("%q: %q", e.Status, e.Msg)
 }
 
-func (s *service) call(ctx context.Context, soapAction string, operation request) (*response, error) {
+func (s *service) call(ctx context.Context, operation request) (*response, error) {
 
-	// Envelope is a SOAP envelope.
-	payload := struct {
-		XMLName      xml.Name    `xml:"SOAP-ENV:Envelope"`
-		EnvelopeAttr string      `xml:"xmlns:SOAP-ENV,attr"`
-		NSAttr       string      `xml:"xmlns:ns,attr"`
-		TNSAttr      string      `xml:"xmlns:tns,attr,omitempty"`
-		URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
-		XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
-		Header       interface{} `xml:"SOAP-ENV:Header"`
-		Body         request     `xml:"SOAP-ENV:Body"`
-	}{
-		EnvelopeAttr: s.Envelope,
-		URNAttr:      s.URNamespace,
-		NSAttr:       s.Namespace,
-		XSIAttr:      "http://www.w3.org/2001/XMLSchema-instance",
-		Header:       s.Header,
-		Body:         operation,
-	}
-
-	if payload.EnvelopeAttr == "" {
-		payload.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
-	}
-	if payload.NSAttr == "" {
-		payload.NSAttr = s.URL
-	}
-	var b bytes.Buffer
-	err := xml.NewEncoder(&b).Encode(payload)
+	payload, err := marshallRequest(operation)
 	if err != nil {
 		return nil, err
 	}
-
-	//log.Printf("Req: %s", b.Bytes())
 
 	cli := s.Config
 	if cli == nil {
 		cli = http.DefaultClient
 	}
-	request, err := http.NewRequest(http.MethodPost, s.URL, &b)
+	request, err := http.NewRequest(http.MethodPost, s.URL, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -69,19 +41,10 @@ func (s *service) call(ctx context.Context, soapAction string, operation request
 	if s.UserAgent != "" {
 		request.Header.Add("User-Agent", s.UserAgent)
 	}
-	var actionName string
-	ct := s.ContentType
-	if ct == "" {
-		ct = "text/xml"
-	}
-	request.Header.Set("Content-Type", ct)
 
-	if s.ExcludeActionNamespace {
-		actionName = soapAction
-	} else {
-		actionName = fmt.Sprintf("%s/%s", s.Namespace, soapAction)
-	}
-	request.Header.Add("SOAPAction", actionName)
+	request.Header.Set("Accept", "text/xml, multipart/related")
+	request.Header.Add("SOAPAction", "")
+	request.Header.Set("Content-Type", "text/xml; charset=utf-8")
 
 	resp, err := cli.Do(request)
 	if err != nil {
@@ -101,11 +64,35 @@ func (s *service) call(ctx context.Context, soapAction string, operation request
 	}
 
 	marshalStructure := struct {
-		XMLName xml.Name `xml:"Envelope"`
+		XMLName xml.Name `xml:""`
 		Body    *response
 	}{Body: &response{}}
 
 	decoder := xml.NewDecoder(resp.Body)
 	//decoder.CharsetReader = charset.NewReaderLabel
 	return marshalStructure.Body, decoder.Decode(&marshalStructure)
+}
+
+func marshallRequest(operation request) ([]byte, error) {
+	// Envelope is a SOAP envelope.
+	requestBody := struct {
+		XMLName      xml.Name    `xml:"SOAP-ENV:Envelope"`
+		EnvelopeAttr string      `xml:"xmlns:SOAP-ENV,attr"`
+		NSAttr       string      `xml:"xmlns:ns,attr"`
+		TNSAttr      string      `xml:"xmlns:tns,attr,omitempty"`
+		URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
+		XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
+		Header       interface{} `xml:"SOAP-ENV:Header"`
+		Body         request     `xml:"SOAP-ENV:Body"`
+	}{
+		NSAttr:  Namespace,
+		XSIAttr: "http://www.w3.org/2001/XMLSchema-instance",
+		Body:    operation,
+	}
+
+	if requestBody.EnvelopeAttr == "" {
+		requestBody.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
+	}
+
+	return xml.MarshalIndent(requestBody, "", "  ")
 }

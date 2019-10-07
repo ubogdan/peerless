@@ -99,8 +99,7 @@ type APIService interface {
 // New creates an initializes a API service.
 func New(url, customer, passcode, userid string) APIService {
 	return &service{
-		URL:       url,
-		Namespace: Namespace,
+		URL: url,
 		Authentication: &authInfo{
 			Customer: customer,
 			PassCode: passcode,
@@ -113,13 +112,10 @@ func New(url, customer, passcode, userid string) APIService {
 type service struct {
 	URL                    string       // URL of the server
 	UserAgent              string       // User-Agent header will be added to each request
-	Namespace              string       // SOAP Namespace
 	URNamespace            string       // Uniform Resource Namespace
 	ThisNamespace          string       // SOAP This-Namespace (tns)
 	ExcludeActionNamespace bool         // Include Namespace to SOAP Action header
 	Envelope               string       // Optional SOAP Envelope
-	Header                 interface{}  // Optional SOAP Header
-	ContentType            string       // Optional Content-Type (default text/xml)
 	Config                 *http.Client // Optional HTTP client
 	Authentication         *authInfo    // Authentication
 }
@@ -132,7 +128,7 @@ func (s *service) ActivateSOA(ctx context.Context, orderID []string) (bool, erro
 			OrderID:        orderID,
 		},
 	}
-	res, err := s.call(ctx, "activateSOA", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return false, err
 	}
@@ -148,7 +144,7 @@ func (s *service) AddNotes(ctx context.Context, orderID, note string) (bool, err
 			Notes:          note,
 		},
 	}
-	res, err := s.call(ctx, "addNotes", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return false, err
 	}
@@ -163,7 +159,7 @@ func (s *service) CreateException(ctx context.Context, ExceptionNote *ExceptionN
 			ExceptionNote:  ExceptionNote,
 		},
 	}
-	res, err := s.call(ctx, "createException", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return false, err
 	}
@@ -178,7 +174,7 @@ func (s *service) DisconnectOrder(ctx context.Context, DisconnectOrderRequest *D
 			DisconnectOrderRequest: DisconnectOrderRequest,
 		},
 	}
-	res, err := s.call(ctx, "disconnectOrder", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -193,7 +189,7 @@ func (s *service) Download(ctx context.Context, orderID string) ([]Attachment, e
 			OrderID:        orderID,
 		},
 	}
-	res, err := s.call(ctx, "download", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +203,7 @@ func (s *service) GetHierarchicalView(ctx context.Context) (*HiearchicalView, er
 			Authentication: s.Authentication,
 		},
 	}
-	res, err := s.call(ctx, "getHierarchicalView", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +218,7 @@ func (s *service) GetNewNumberSearchFilters(ctx context.Context, filters *Number
 			Filters:        filters,
 		},
 	}
-	res, err := s.call(ctx, "getNewNumberSearchFilters", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +232,7 @@ func (s *service) GetOrderStatus(ctx context.Context, orderID string) (string, e
 			OrderID: orderID,
 		},
 	}
-	res, err := s.call(ctx, "getOrderStatus", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -251,7 +247,7 @@ func (s *service) GetOrdersByPONSearch(ctx context.Context, pon string) ([]Resul
 			Pon:            pon,
 		},
 	}
-	res, err := s.call(ctx, "getOrdersByPONSearch", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +262,7 @@ func (s *service) GetPortInRelatedOrders(ctx context.Context, orderID int64) ([]
 			OrderID:        orderID,
 		},
 	}
-	res, err := s.call(ctx, "getPortInRelatedOrders", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -281,7 +277,7 @@ func (s *service) GetStatusByNumberSearch(ctx context.Context, telephoneNumber [
 			TelephoneNumber: telephoneNumber,
 		},
 	}
-	res, err := s.call(ctx, "getStatusByNumberSearch", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -296,7 +292,7 @@ func (s *service) GetTnInventoryReport(ctx context.Context, searchParams *TnInve
 			SearchParams:   searchParams,
 		},
 	}
-	res, err := s.call(ctx, "getTnInventoryReport", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +307,7 @@ func (s *service) PlaceOrder(ctx context.Context, order *Order) (string, error) 
 			Order:          order,
 		},
 	}
-	res, err := s.call(ctx, "placeOrder", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -326,7 +322,7 @@ func (s *service) PlaceTFDisconnectOrder(ctx context.Context, disconnectOrderReq
 			DisconnectOrderRequest: disconnectOrderRequest,
 		},
 	}
-	res, err := s.call(ctx, "placeTFDisconnectOrder", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -341,7 +337,7 @@ func (s *service) PlaceTFOrder(ctx context.Context, order *TollFreeOrder) (strin
 			TFNOrder:       order,
 		},
 	}
-	res, err := s.call(ctx, "placeTFOrder", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -356,7 +352,7 @@ func (s *service) PortabilityCheck(ctx context.Context, portabilityCheckRequest 
 			PortabilityCheckRequest: portabilityCheckRequest,
 		},
 	}
-	res, err := s.call(ctx, "portabilityCheck", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -371,7 +367,7 @@ func (s *service) SearchNumbers(ctx context.Context, filters *NumberSearchParame
 			Filters:        filters,
 		},
 	}
-	res, err := s.call(ctx, "searchNumbers", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -387,7 +383,7 @@ func (s *service) SearchOrderDetailsByOrderId(ctx context.Context, orderID int64
 			OrderType:      orderType,
 		},
 	}
-	res, err := s.call(ctx, "searchOrderDetailsByOrderId", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -403,7 +399,7 @@ func (s *service) SupplementOrder(ctx context.Context, supplementInfo *Supplemen
 			Order:          order,
 		},
 	}
-	res, err := s.call(ctx, "supplementOrder", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -419,7 +415,7 @@ func (s *service) Upload(ctx context.Context, orderID string, attachments []Atta
 			Attachments:    attachments,
 		},
 	}
-	res, err := s.call(ctx, "upload", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return false, err
 	}
@@ -434,7 +430,7 @@ func (s *service) ValidateE911Address(ctx context.Context, address BaseAddress) 
 			Address:        address,
 		},
 	}
-	res, err := s.call(ctx, "validateE911Address", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -449,7 +445,7 @@ func (s *service) ViewNumberDetails(ctx context.Context, numbers []string) ([]Or
 			TelephoneNumber: numbers,
 		},
 	}
-	res, err := s.call(ctx, "viewNumberDetails", req)
+	res, err := s.call(ctx, req)
 	if err != nil {
 		return nil, err
 	}
