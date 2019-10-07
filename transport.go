@@ -46,31 +46,13 @@ func (s *service) call(ctx context.Context, operation request) (*response, error
 	request.Header.Add("SOAPAction", "")
 	request.Header.Set("Content-Type", "text/xml; charset=utf-8")
 
-	resp, err := cli.Do(request)
+	response, err := cli.Do(request)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer response.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		// read only the first MiB of the body in error case
-		limReader := io.LimitReader(resp.Body, 1024*1024)
-		body, _ := ioutil.ReadAll(limReader)
-		return nil, &HTTPError{
-			StatusCode: resp.StatusCode,
-			Status:     resp.Status,
-			Msg:        string(body),
-		}
-	}
-
-	marshalStructure := struct {
-		XMLName xml.Name `xml:""`
-		Body    *response
-	}{Body: &response{}}
-
-	decoder := xml.NewDecoder(resp.Body)
-	//decoder.CharsetReader = charset.NewReaderLabel
-	return marshalStructure.Body, decoder.Decode(&marshalStructure)
+	return unmarshallResponse(response)
 }
 
 func marshallRequest(operation request) ([]byte, error) {
@@ -95,4 +77,30 @@ func marshallRequest(operation request) ([]byte, error) {
 	}
 
 	return xml.MarshalIndent(requestBody, "", "  ")
+}
+
+func unmarshallResponse(res *http.Response) (*response, error) {
+
+	if res.StatusCode != http.StatusOK {
+		// read only the first MiB of the body in error case
+		limReader := io.LimitReader(res.Body, 1024*1024)
+		body, _ := ioutil.ReadAll(limReader)
+		return nil, &HTTPError{
+			StatusCode: res.StatusCode,
+			Status:     res.Status,
+			Msg:        string(body),
+		}
+	}
+
+	marshalStructure := struct {
+		XMLName xml.Name `xml:""`
+		Body    *response
+	}{Body: &response{}}
+
+	bodyBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return marshalStructure.Body, xml.Unmarshal(bodyBytes, &marshalStructure)
 }
