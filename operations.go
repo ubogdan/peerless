@@ -1,6 +1,10 @@
 package peerless
 
-type request struct {
+import (
+	"encoding/xml"
+)
+
+type requestBody struct {
 	ActivateSOA                 *activateSOA                 `xml:"ns:activateSOA,omitempty" json:"activateSOA,omitempty" yaml:"activateSOA,omitempty"`
 	AddNotes                    *addNotes                    `xml:"ns:addNotes,omitempty" json:"addNotes,omitempty" yaml:"addNotes,omitempty"`
 	CreateException             *createException             `xml:"ns:createException,omitempty" json:"createException,omitempty" yaml:"createException,omitempty"`
@@ -25,7 +29,8 @@ type request struct {
 	ViewNumberDetails           *viewNumberDetails           `xml:"ns:viewNumberDetails,omitempty" json:"viewNumberDetails,omitempty" yaml:"viewNumberDetails,omitempty"`
 }
 
-type response struct {
+type responseBody struct {
+	XMLName                     xml.Name                             `xml:"Body"`
 	ActivateSOA                 *activateSOAResponse                 `xml:"activateSOAResponse,omitempty" json:"activateSOAResponse,omitempty" yaml:"activateSOAResponse,omitempty"`
 	AddNotes                    *addNotesResponse                    `xml:"addNotesResponse,omitempty" json:"addNotesResponse,omitempty" yaml:"addNotesResponse,omitempty"`
 	CreateException             *createExceptionResponse             `xml:"createExceptionResponse,omitempty" json:"createExceptionResponse,omitempty" yaml:"createExceptionResponse,omitempty"`
@@ -48,6 +53,7 @@ type response struct {
 	Upload                      *uploadResponse                      `xml:"uploadResponse,omitempty" json:"uploadResponse,omitempty" yaml:"uploadResponse,omitempty"`
 	ValidateE911Address         *validateE911AddressResponse         `xml:"validateE911AddressResponse,omitempty" json:"validateE911AddressResponse,omitempty" yaml:"validateE911AddressResponse,omitempty"`
 	ViewNumberDetails           *viewNumberDetailsResponse           `xml:"viewNumberDetailsResponse,omitempty" json:"viewNumberDetailsResponse,omitempty" yaml:"viewNumberDetailsResponse,omitempty"`
+	Fault                       *Fault                               `xml:",omitempty"`
 }
 
 type activateSOA struct {

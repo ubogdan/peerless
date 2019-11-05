@@ -10,6 +10,36 @@ import (
 	"net/http"
 )
 
+type soapRespone struct {
+	XMLName xml.Name     `xml:"Envelope"`
+	Header  *soapHeader  `xml:",omitempty"`
+	Body    responseBody `xml:",omitempty"`
+}
+
+type soapRequest struct {
+	XMLName      xml.Name    `xml:"SOAP-ENV:Envelope"`
+	EnvelopeAttr string      `xml:"xmlns:SOAP-ENV,attr"`
+	NSAttr       string      `xml:"xmlns:ns,attr"`
+	TNSAttr      string      `xml:"xmlns:tns,attr,omitempty"`
+	URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
+	XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
+	Header       interface{} `xml:"SOAP-ENV:Header"`
+	Body         requestBody `xml:"SOAP-ENV:Body"`
+}
+
+type soapHeader struct {
+	XMLName xml.Name    `xml:"Header"`
+	Content interface{} `xml:",omitempty"`
+}
+
+type Fault struct {
+	XMLName xml.Name `xml:"Fault"`
+	Code    string   `xml:"faultcode,omitempty"`
+	String  string   `xml:"faultstring,omitempty"`
+	Actor   string   `xml:"faultactor,omitempty"`
+	Detail  string   `xml:"detail,omitempty"`
+}
+
 // HTTPError is detailed soap http error
 type HTTPError struct {
 	StatusCode int
@@ -21,7 +51,11 @@ func (e *HTTPError) Error() string {
 	return fmt.Sprintf("%q: %q", e.Status, e.Msg)
 }
 
-func (s *service) call(ctx context.Context, operation request) (*response, error) {
+func (f *Fault) Error() string {
+	return fmt.Sprintf("%q: %q", f.Code, f.String)
+}
+
+func (s *service) call(ctx context.Context, operation requestBody) (*responseBody, error) {
 
 	payload, err := marshallRequest(operation)
 	if err != nil {
@@ -55,52 +89,44 @@ func (s *service) call(ctx context.Context, operation request) (*response, error
 	return unmarshallResponse(response)
 }
 
-func marshallRequest(operation request) ([]byte, error) {
-	// Envelope is a SOAP envelope.
-	requestBody := struct {
-		XMLName      xml.Name    `xml:"SOAP-ENV:Envelope"`
-		EnvelopeAttr string      `xml:"xmlns:SOAP-ENV,attr"`
-		NSAttr       string      `xml:"xmlns:ns,attr"`
-		TNSAttr      string      `xml:"xmlns:tns,attr,omitempty"`
-		URNAttr      string      `xml:"xmlns:urn,attr,omitempty"`
-		XSIAttr      string      `xml:"xmlns:xsi,attr,omitempty"`
-		Header       interface{} `xml:"SOAP-ENV:Header"`
-		Body         request     `xml:"SOAP-ENV:Body"`
-	}{
+func marshallRequest(operation requestBody) ([]byte, error) {
+	envelope := &soapRequest{
 		NSAttr:  Namespace,
 		XSIAttr: "http://www.w3.org/2001/XMLSchema-instance",
 		Body:    operation,
 	}
-
-	if requestBody.EnvelopeAttr == "" {
-		requestBody.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
+	if envelope.EnvelopeAttr == "" {
+		envelope.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
 	}
 
-	return xml.MarshalIndent(requestBody, "", "  ")
+	return xml.MarshalIndent(envelope, "", "  ")
 }
 
-func unmarshallResponse(res *http.Response) (*response, error) {
+func unmarshallResponse(res *http.Response) (*responseBody, error) {
+	envelope := &soapRespone{}
 
 	if res.StatusCode != http.StatusOK {
 		// read only the first MiB of the body in error case
 		limReader := io.LimitReader(res.Body, 1024*1024)
-		body, _ := ioutil.ReadAll(limReader)
-		return nil, &HTTPError{
-			StatusCode: res.StatusCode,
-			Status:     res.Status,
-			Msg:        string(body),
-		}
-	}
+		bodyBytes, _ := ioutil.ReadAll(limReader)
 
-	marshalStructure := struct {
-		XMLName xml.Name `xml:""`
-		Body    *response
-	}{Body: &response{}}
+		err := xml.Unmarshal(bodyBytes, &envelope)
+		if err != nil {
+			// return HTTP Error
+			return nil, &HTTPError{
+				StatusCode: res.StatusCode,
+				Status:     res.Status,
+				Msg:        string(bodyBytes),
+			}
+		}
+		// return SOAP Fault
+		return nil, envelope.Body.Fault
+	}
 
 	bodyBytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	return marshalStructure.Body, xml.Unmarshal(bodyBytes, &marshalStructure)
+	return &envelope.Body, xml.Unmarshal(bodyBytes, &envelope)
 }
