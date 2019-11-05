@@ -56,8 +56,13 @@ func (f *Fault) Error() string {
 }
 
 func (s *service) call(ctx context.Context, operation requestBody) (*responseBody, error) {
-
-	payload, err := marshallRequest(operation)
+	envelope := &soapRequest{
+		NSAttr:       Namespace,
+		XSIAttr:      "http://www.w3.org/2001/XMLSchema-instance",
+		EnvelopeAttr: "http://schemas.xmlsoap.org/soap/envelope/",
+		Body:         operation,
+	}
+	payload, err := xml.MarshalIndent(envelope, "", "  ")
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +71,13 @@ func (s *service) call(ctx context.Context, operation requestBody) (*responseBod
 	if cli == nil {
 		cli = http.DefaultClient
 	}
-	request, err := http.NewRequest(http.MethodPost, s.URL, bytes.NewBuffer(payload))
+
+	// Add xml header to payload
+	reqWriter := &bytes.Buffer{}
+	reqWriter.WriteString(xml.Header)
+	reqWriter.Write(payload)
+
+	request, err := http.NewRequest(http.MethodPost, s.URL, reqWriter)
 	if err != nil {
 		return nil, err
 	}
@@ -87,19 +98,6 @@ func (s *service) call(ctx context.Context, operation requestBody) (*responseBod
 	defer response.Body.Close()
 
 	return unmarshallResponse(response)
-}
-
-func marshallRequest(operation requestBody) ([]byte, error) {
-	envelope := &soapRequest{
-		NSAttr:  Namespace,
-		XSIAttr: "http://www.w3.org/2001/XMLSchema-instance",
-		Body:    operation,
-	}
-	if envelope.EnvelopeAttr == "" {
-		envelope.EnvelopeAttr = "http://schemas.xmlsoap.org/soap/envelope/"
-	}
-
-	return xml.MarshalIndent(envelope, "", "  ")
 }
 
 func unmarshallResponse(res *http.Response) (*responseBody, error) {

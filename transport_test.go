@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-// TODO test
 func TestService_Call(t *testing.T) {
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`
