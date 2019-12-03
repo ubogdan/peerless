@@ -219,10 +219,87 @@ func TestService_FailGetOrderStatus(t *testing.T) {
 }
 
 func TestService_GetOrdersByPONSearch(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:getOrdersByPONSearchResponse xmlns:ns2="http://publicapi.api.s2.peerless.com/">
+         <return>true</return>
+      </ns2:getOrdersByPONSearchResponse>
+   </S:Body>
+</S:Envelope>`))
+	})
 
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.GetOrdersByPONSearch(context.Background(), "100")
+	if err != nil {
+		t.Fatalf("GetOrdersByPONSearch: %s", err)
+	}
+}
+
+func TestService_FailGetOrdersByPONSearch(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+	<S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+		<faultcode>EP0003</faultcode>
+		<faultstring>ERROR_WHILE_VALIDATING_ORDER_NUMBERS</faultstring>
+	</S:Fault>
+		</S:Body>
+		</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.GetOrdersByPONSearch(context.Background(), "100")
+	if err == nil {
+		t.Fatalf("GetOrdersByPONSearch should fail")
+	}
 }
 
 func TestService_GetPortInRelatedOrders(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:getPortInRelatedOrdersResponse xmlns:ns2="http://publicapi.api.s2.peerless.com/">
+         <return>true</return>
+      </ns2:getPortInRelatedOrdersResponse>
+   </S:Body>
+</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.GetPortInRelatedOrders(context.Background(), 1000)
+	if err != nil {
+		t.Fatalf("GetPortInRelatedOrders: %s", err)
+	}
+}
+
+func TestService_FailGetPortInRelatedOrders(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+	<S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+		<faultcode>EP0003</faultcode>
+		<faultstring>ERROR_WHILE_VALIDATING_ORDER_NUMBERS</faultstring>
+	</S:Fault>
+		</S:Body>
+		</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.GetPortInRelatedOrders(context.Background(), 1000)
+	if err == nil {
+		t.Fatalf("GetPortInRelatedOrders should fail")
+	}
 
 }
 
@@ -277,7 +354,45 @@ func TestService_PlaceOrder(t *testing.T) {
 }
 
 func TestService_DisconnectOrder(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:disconnectOrderResponse xmlns:ns2="http://publicapi.api.s2.peerless.com/">
+         <return>true</return>
+      </ns2:disconnectOrderResponse>
+   </S:Body>
+</S:Envelope>`))
+	})
 
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.DisconnectOrder(context.Background(), DisconnectOrderRequest{Pon: "1000"})
+	if err != nil {
+		t.Fatalf("GetPortInRelatedOrders: %s", err)
+	}
+}
+
+func TestService_FailDisconnectOrder(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+	<S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+		<faultcode>EP0003</faultcode>
+		<faultstring>ERROR_WHILE_VALIDATING_ORDER_NUMBERS</faultstring>
+	</S:Fault>
+		</S:Body>
+		</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.DisconnectOrder(context.Background(), DisconnectOrderRequest{Pon: "1000"})
+	if err == nil {
+		t.Fatalf("DisconnectOrder should fail")
+	}
 }
 
 func TestService_PlaceTFOrder(t *testing.T) {

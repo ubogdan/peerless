@@ -33,7 +33,7 @@ type APIService interface {
 
 	// DisconnectOrder If order is soft disconnect with or without features then available date will not be
 	// displayed. And if it is hard disconnect then available date will be shown.
-	DisconnectOrder(ctx context.Context, DisconnectOrderRequest *DisconnectOrderRequest) (string, error)
+	DisconnectOrder(ctx context.Context, DisconnectOrderRequest DisconnectOrderRequest) (string, error)
 
 	// Download This method can be used to upload required attachments to an order
 	Download(ctx context.Context, orderID string) ([]Attachment, error)
@@ -167,11 +167,11 @@ func (s *service) CreateException(ctx context.Context, ExceptionNote *ExceptionN
 }
 
 // DisconnectOrder was auto-generated from WSDL.
-func (s *service) DisconnectOrder(ctx context.Context, DisconnectOrderRequest *DisconnectOrderRequest) (string, error) {
+func (s *service) DisconnectOrder(ctx context.Context, DisconnectOrderRequest DisconnectOrderRequest) (string, error) {
 	req := requestBody{
 		DisconnectOrder: &disconnectOrder{
 			Authentication:         s.Authentication,
-			DisconnectOrderRequest: DisconnectOrderRequest,
+			DisconnectOrderRequest: &DisconnectOrderRequest,
 		},
 	}
 	res, err := s.call(ctx, req)
