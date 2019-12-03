@@ -103,7 +103,7 @@ type DisconnectTns struct {
 	DiscoType int    `xml:"discoType,omitempty" json:"discoType,omitempty" yaml:"discoType,omitempty"`
 }
 
-// ExcpetionNote was auto-generated from WSDL.
+// ExceptionNote was auto-generated from WSDL.
 type ExceptionNote struct {
 	EmailID       string `xml:"emailId,omitempty" json:"emailId,omitempty" yaml:"emailId,omitempty"`
 	ExceptionNote string `xml:"exceptionNote,omitempty" json:"exceptionNote,omitempty" yaml:"exceptionNote,omitempty"`
