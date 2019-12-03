@@ -7,3 +7,26 @@
 Work in progress ... 
 
 ## Examples
+
+```go
+api := New(StagingEndpoint, "Customer", "XXXXXX", "user@domain.com")
+```
+
+New number order
+----------------
+```go
+
+
+```
+Get order status
+```go
+res, err := api.GetOrderStatus("110001")if err != nil {
+	return error
+}
+```
+
+Update number
+----------------
+```go
+
+```

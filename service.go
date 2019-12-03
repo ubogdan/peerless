@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	// Envelope is a SOAP envelope.
-	Namespace = "http://publicapi.api.s2.peerless.com/"
+	// Namespace
+	namespace = "http://publicapi.api.s2.peerless.com/"
 	// ProductionEndpoint endpoint used in production
 	ProductionEndpoint = "https://animate.peerlessnetwork.com:8181/animateapi/axis/APIService"
 	// StagingEndpoint endpoint used for development

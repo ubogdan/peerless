@@ -30,6 +30,28 @@ func TestService_ActivateSOA(t *testing.T) {
 	t.Logf("ActivateSOA: %v", res)
 }
 
+func TestService_FailActivateSOA(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+	<S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+		<faultcode>EP0003</faultcode>
+		<faultstring>ERROR_WHILE_VALIDATING_ORDER_NUMBERS</faultstring>
+	</S:Fault>
+		</S:Body>
+		</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.ActivateSOA(context.Background(), []string{"100"})
+	if err == nil {
+		t.Fatalf("AddNotes should fail")
+	}
+}
+
 func TestService_AddNotes(t *testing.T) {
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
@@ -47,6 +69,28 @@ func TestService_AddNotes(t *testing.T) {
 	_, err := api.AddNotes(context.Background(), "100", "Test Note")
 	if err != nil {
 		t.Fatalf("AddNotes: %s", err)
+	}
+}
+
+func TestService_FailAddNotes(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+		w.Write([]byte(`<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+	<S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+		<faultcode>EP0003</faultcode>
+		<faultstring>ERROR_WHILE_VALIDATING_ORDER_NUMBERS</faultstring>
+	</S:Fault>
+		</S:Body>
+		</S:Envelope>`))
+	})
+
+	api, srvShutdown := testingHTTPClient(h)
+	defer srvShutdown()
+
+	_, err := api.AddNotes(context.Background(), "100", "Test Note")
+	if err == nil {
+		t.Fatalf("AddNotes should fail")
 	}
 }
 

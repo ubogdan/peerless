@@ -32,6 +32,7 @@ type soapHeader struct {
 	Content interface{} `xml:",omitempty"`
 }
 
+// Fault godoc
 type Fault struct {
 	XMLName xml.Name `xml:"Fault"`
 	Code    string   `xml:"faultcode,omitempty"`
@@ -57,7 +58,7 @@ func (f *Fault) Error() string {
 
 func (s *service) call(ctx context.Context, operation requestBody) (*responseBody, error) {
 	envelope := &soapRequest{
-		NSAttr:       Namespace,
+		NSAttr:       namespace,
 		XSIAttr:      "http://www.w3.org/2001/XMLSchema-instance",
 		EnvelopeAttr: "http://schemas.xmlsoap.org/soap/envelope/",
 		Body:         operation,
