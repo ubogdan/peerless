@@ -1,7 +1,8 @@
 repo_name: ubogdan/peerless
-report_id: 28fb31340dfee5170551cb5e3de23636
+report_id: aba931c7b35b8a5e74f000c4cb2946b7
+version: 0.1
 repo_type: Public
-timestamp: '2023-12-14T09:58:26+00:00'
+timestamp: '2024-01-04T15:14:29+00:00'
 requested_by: stack-file[bot]
 provider: github
 branch: master
@@ -17,6 +18,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1005/O6AczwfV_400x400.png
+  detection_source_url: https://github.com/ubogdan/peerless
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -26,6 +28,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/ubogdan/peerless
   detection_source: Repo Metadata
 - name: Travis CI
   description: A hosted continuous integration service for open source and private
@@ -36,6 +39,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/460/Lu6cGu0z_400x400.png
+  detection_source_url: https://github.com/ubogdan/peerless/blob/master/.travis.yml
   detection_source: ".travis.yml"
   last_updated_by: Bogdan Ungureanu
   last_updated_on: 2019-10-03 11:26:11.000000000 Z
